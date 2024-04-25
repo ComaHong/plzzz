@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [Header("모든 메뉴")]
+    [Header("좀비씬의 모든 메뉴")]
     public GameObject pauseMenuUI;
     public GameObject EndGameMenuUI;
     public GameObject ObjectiveMenuUI;
+
+
 
     public static bool GameIsStopped = false;
 
@@ -17,7 +20,7 @@ public class UIManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if(GameIsStopped)
+            if (GameIsStopped)
             {
                 Resume();
                 Cursor.lockState = CursorLockMode.Locked;
@@ -67,13 +70,15 @@ public class UIManager : MonoBehaviour
     }
     public void Restart()
     {
-        // 재시작
+        // 메인 메뉴로 돌아가서 게임 재시작
+        SceneManager.LoadScene("MainMenu");
 
     }
 
     public void LoadMenu()
     {
         // 메뉴 로드
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void QuitGame()
@@ -85,7 +90,8 @@ public class UIManager : MonoBehaviour
     {
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
-        GameIsStopped=true; 
+        GameIsStopped = true;
     }
-    
+
+
 }

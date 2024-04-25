@@ -2,6 +2,7 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
@@ -140,14 +141,11 @@ public class PlayerController : MonoBehaviour
         mouseX = Input.GetAxis("Mouse X");
         mouseY = Input.GetAxis("Mouse Y");
 
-
         // 블렌트 트리 애니메이션 움직임의 자연스러움을 위해
         float smoothedValueX = Mathf.Lerp(anim.GetFloat("MoveH"), h, 6f * Time.deltaTime);
         float smoothedValueY = Mathf.Lerp(anim.GetFloat("MoveV"), v, 6f * Time.deltaTime);
         anim.SetFloat("MoveV", smoothedValueY);
         anim.SetFloat("MoveH", smoothedValueX);
-
-
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -182,7 +180,6 @@ public class PlayerController : MonoBehaviour
 
     private void MoveAndRotate()
     {
-
         // Rotate
         transform.Rotate(Vector3.up * mouseX);
         centerTr.Rotate(Vector3.right * -mouseY);
@@ -212,7 +209,6 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             anim.SetBool("Run", false);
-
         }
     }
     void Jump()
