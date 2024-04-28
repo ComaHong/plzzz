@@ -40,7 +40,7 @@ public class Rifle : MonoBehaviour
         Debug.Log("ÃÑÈ¹µæ");
         transform.SetParent(hand);
         presentAmmunition = maximumammunition;
-       
+
 
 
 
@@ -53,7 +53,7 @@ public class Rifle : MonoBehaviour
         {
             return;
         }
-        if (presentAmmunition <= 0 )
+        if (presentAmmunition <= 0)
         {
             StartCoroutine(Reload());
             return;
@@ -62,7 +62,6 @@ public class Rifle : MonoBehaviour
 
         if (Input.GetButton("Fire1") && Time.time >= nextTimeToShoot)
         {
-
             muzzleSpark.Play();
             anim.SetBool("Fire", true);
             anim.SetBool("Idle", false);
@@ -71,7 +70,7 @@ public class Rifle : MonoBehaviour
         }
         else if (Input.GetButtonUp("Fire1"))
         {
-            muzzleSpark.Stop();
+            //muzzleSpark.Stop();
             anim.SetBool("Idle", false);
             anim.SetBool("FireWalk", true);
         }

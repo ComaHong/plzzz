@@ -43,6 +43,7 @@ public class Zombie2 : MonoBehaviour
         // 시작하면 네비메쉬컴포넌트를 가져옴
         zombieAgent = GetComponent<NavMeshAgent>();
         hpSlider.GiveFullHealth(zombieHealth);
+        playerBody = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     // Update is called once per frame

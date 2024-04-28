@@ -10,6 +10,7 @@ public class SwitchCamera : MonoBehaviour
     public GameObject AimCanvas; // 에임캠을 담당하는 캔버스
     public GameObject ThirdPersonCam; // 플레이어 3인칭 카메라
     public GameObject ThirdPersonCanvas; // 플레이어 3인칭 카메라 담당 캔버스
+    
 
     [Header("Camera Animator")]
     public Animator anim; // 플레이어의 애니메이터
@@ -25,7 +26,7 @@ public class SwitchCamera : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetButton("Fire2") && Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow ))
+        if (Input.GetButton("Fire2") && Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
             anim.SetBool("Idle", false);
             anim.SetBool("IdleAim", true);

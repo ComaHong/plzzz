@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     public Transform player; // 플레이어의 Transform
     public Animator anim; // 플레이어의 애니메이터
     public GameObject cam; // 카메라
-    public Text cartext; // 차량 상호작용할 메시지
+   /* public Text cartext;*/ // 차량 상호작용할 메시지
 
     /// <summary>
     /// private필드
@@ -41,6 +41,10 @@ public class PlayerController : MonoBehaviour
     public bool isGround = false; // 땅을 밟고 있는지 확인할 bool 변수
 
 
+    private void Awake()
+    {
+        
+    }
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -219,6 +223,7 @@ public class PlayerController : MonoBehaviour
         if (spbar && isGround)
         {
             Debug.Log("JUMP");
+            anim.SetTrigger("Jump");
             isGround = false;
             var force = Vector3.up * 5;
             rb.velocity = force;
