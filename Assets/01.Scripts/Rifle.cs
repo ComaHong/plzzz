@@ -22,7 +22,7 @@ public class Rifle : MonoBehaviour
     private int maximumammunition = 32;
     public int mag = 10;
     private int presentAmmunition;
-    public float reloadingTime = 1.3f;
+    public float reloadingTime = 2.0f;
     private bool setReloading = false;
 
     [Header("Rifle Effects")] //총기 이펙트
@@ -53,7 +53,12 @@ public class Rifle : MonoBehaviour
         {
             return;
         }
-        if (presentAmmunition <= 0)
+        if (presentAmmunition <= 0 || Input.GetKeyDown(KeyCode.R))
+        {
+            StartCoroutine(Reload());
+            
+        }
+        if (Input.GetKeyDown(KeyCode.R))
         {
             StartCoroutine(Reload());
             return;
@@ -152,20 +157,6 @@ public class Rifle : MonoBehaviour
         Gizmos.DrawRay(rayOrigin, rayDirection * shootingRange);
     }
 
-    //public void Onparticleplaying()
-    //{
-    //    if (Input.GetButton("Fire1") && Time.time >= nextTimeToShoot)
-    //    {
-
-    //        nextTimeToShoot = Time.time + 1f / fireCharge;
-    //        Shoot();
-
-    //    }
-    //    else if (Input.GetButtonUp("Fire1"))
-    //    {
-    //        muzzleSpark.Stop();
-    //    }
-    //}
     IEnumerator Reload()
     {
         playerController.walkSpeed = 0f;
@@ -173,11 +164,11 @@ public class Rifle : MonoBehaviour
         setReloading = true;
         Debug.Log("장전중...");
         // 애니메이션 실행
-        anim.SetBool("Reloading", true);
+        anim.SetTrigger("Reload");
         // 장전 소리 실행
         yield return new WaitForSeconds(reloadingTime);
         // 애니메이션 실행
-        anim.SetBool("Reloading", false);
+        //anim.SetBool("Reloading", false);
         presentAmmunition = maximumammunition;
         playerController.walkSpeed = 1.9f;
         playerController.runSpeed = 3;
