@@ -26,19 +26,23 @@ public class Rifle : MonoBehaviour
     private bool setReloading = false;
 
     [Header("Rifle Effects")] //총기 이펙트
-    public ParticleSystem muzzleSpark;
-    public GameObject WoodedEffect;
-    public GameObject goreEffect;
+    public ParticleSystem muzzleSpark; // 사용할 총기화염 파티클
+    public GameObject WoodedEffect; // 총알이 박힘을 알려주는 나무 이펙트 파티클
+    public GameObject goreEffect; // 좀비가 피격당함을 알 수 있는 피 이펙트 파티클
 
-
+    // 이 스크립트가 켜질때마다 실행되는 메서드
     private void OnEnable()
     {
+        // 총UI 켬
         rifleUI.SetActive(true);
     }
+    // play 될때 먼저 실행될 메서드
     private void Awake()
     {
         Debug.Log("총획득");
+        // 총의 위치값을 손 오브젝트의 부모로 등록
         transform.SetParent(hand);
+        // 현재 총알을 최대 총알로 변경
         presentAmmunition = maximumammunition;
 
 
@@ -48,23 +52,25 @@ public class Rifle : MonoBehaviour
     }
 
     void Update()
-    {
+    {// 리로딩이 진행되면 더이상 코드가 실행되지못하고 if문을 빠져나감
         if (setReloading)
         {
             return;
         }
+        // 총알이 0보다 작거나 같거나 키보드 R키를 눌렀을떄 실행될 코드
         if (presentAmmunition <= 0 || Input.GetKeyDown(KeyCode.R))
         {
             StartCoroutine(Reload());
             
         }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            StartCoroutine(Reload());
-            return;
-        }
 
+        //if (Input.GetKeyDown(KeyCode.R))
+        //{
+        //    StartCoroutine(Reload());
+        //    return;
+        //}
 
+        // 마우스 왼쪽버튼을 누르고 게임내에서의 시간이 다음 슈팅시간과 같더나 더 클때 실행될 코드
         if (Input.GetButton("Fire1") && Time.time >= nextTimeToShoot)
         {
             muzzleSpark.Play();
@@ -73,24 +79,37 @@ public class Rifle : MonoBehaviour
             nextTimeToShoot = Time.time + 1f / fireCharge;
             Shoot();
         }
+        // 마우스 왼쪽버튼이 떼졌을떄
         else if (Input.GetButtonUp("Fire1"))
         {
-            //muzzleSpark.Stop();
+            // 총기화염파티클 멈춤
+            muzzleSpark.Stop();
+            // Idle 애니메이션 중지
             anim.SetBool("Idle", false);
+            // FireWalk 애니메이션 실행
             anim.SetBool("FireWalk", true);
         }
+        // 마우스 오른쪽버튼과 왼쪽버튼이 동시에 눌릴떄 실행될 코드
         else if (Input.GetButton("Fire2") && Input.GetButton("Fire1"))
         {
+            // Idle 애니메이션 중지
             anim.SetBool("Idle", false);
+            // IdleAim 애니메이션 실행
             anim.SetBool("IdleAim", true);
+            // FireWalk 애니메이션 실행
             anim.SetBool("FireWalk", true);
+            // Walk 애니메이션 실행
             anim.SetBool("Walk", true);
-            anim.SetBool("Reloading", false);
+            //// Reloading 애니메이션 중지
+            //anim.SetBool("Reloading", false);
         }
         else
         {
+            // Fire 애니메이션 중지
             anim.SetBool("Fire", false);
+            // Idle 애니메이션 실행
             anim.SetBool("Idle", true);
+            // FireWalk 애니메이션 중지
             anim.SetBool("FireWalk", false);
         }
 
@@ -109,8 +128,9 @@ public class Rifle : MonoBehaviour
         {
             mag--;
         }
-
+        // AmmoCount 스크립트의 UpdateAmmoText 메서드에 presentAmmunition 매개변수를 할당
         AmmoCount.Instance.UpdateAmmoText(presentAmmunition);
+        // AmmoCount 스크립트의 UpdateMagText 메서드에 mag 매개변수를 할당
         AmmoCount.Instance.UpdateMagText(mag);
 
         // 총을 쏘고 있음을 표시

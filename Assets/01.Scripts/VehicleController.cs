@@ -45,11 +45,13 @@ public class VehicleController : MonoBehaviour
     public float hitRange = 2f;
     public float giveDamegeOf = 100f;
     public GameObject goreEffect;
+   public GameObject DestroyEffect; // 차량으로 파괴하면 재생할 이펙트 
+
     //public ParticleSystem muzzleSpark;
 
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -63,7 +65,7 @@ public class VehicleController : MonoBehaviour
                 isOpened = true;
                 radius = 5000f;
                 Debug.Log("차량 탑승");
-
+                ObjectivesComplete.occurrence.GetobjectivesDone(true, true, true, false);
             }
             else if (Input.GetKeyDown(KeyCode.G))
             {
@@ -161,6 +163,7 @@ public class VehicleController : MonoBehaviour
 
             Zombie1 zombie1 = hitinfo.transform.GetComponent<Zombie1>();
             Zombie2 zombie2 = hitinfo.transform.GetComponent<Zombie2>();
+            ObjectToHit objectToHit = hitinfo.transform.GetComponent<ObjectToHit>();
 
             if (zombie1 != null)
             {
@@ -175,6 +178,13 @@ public class VehicleController : MonoBehaviour
                 zombie2.GetComponent<CapsuleCollider>().enabled = false;
                 GameObject goreEffectGo = Instantiate(goreEffect, hitinfo.point, Quaternion.LookRotation(hitinfo.normal));
                 Destroy(goreEffectGo, 0.5f);
+            }
+
+            else if (objectToHit != null)
+            {
+                objectToHit.ObjectHitDamage(giveDamegeOf);
+                GameObject Woodgo = Instantiate(DestroyEffect, hitinfo.point, Quaternion.LookRotation(hitinfo.normal));
+                Destroy(Woodgo, 1f);
             }
         }
     }
