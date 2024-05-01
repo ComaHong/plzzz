@@ -30,9 +30,16 @@ public class Rifle : MonoBehaviour
     public GameObject WoodedEffect; // 총알이 박힘을 알려주는 나무 이펙트 파티클
     public GameObject goreEffect; // 좀비가 피격당함을 알 수 있는 피 이펙트 파티클
 
+
+    public GameObject AmmoOutUI; // 총알표시 UI
+
     // 이 스크립트가 켜질때마다 실행되는 메서드
     private void OnEnable()
     {
+        // AmmoCount 스크립트의 UpdateAmmoText 메서드에 presentAmmunition 매개변수를 할당
+        AmmoCount.Instance.UpdateAmmoText(presentAmmunition);
+        // AmmoCount 스크립트의 UpdateMagText 메서드에 mag 매개변수를 할당
+        AmmoCount.Instance.UpdateMagText(mag);
         // 총UI 켬
         rifleUI.SetActive(true);
     }
@@ -61,7 +68,7 @@ public class Rifle : MonoBehaviour
         if (presentAmmunition <= 0 || Input.GetKeyDown(KeyCode.R))
         {
             StartCoroutine(Reload());
-            
+
         }
 
         //if (Input.GetKeyDown(KeyCode.R))
@@ -120,6 +127,9 @@ public class Rifle : MonoBehaviour
         // 총알 확인
         if (mag == 0)
         {
+            StartCoroutine(showAmmoOut());
+            muzzleSpark.Stop();
+            anim.SetBool("Fire", false);
             // 총알 텍스트
             return;
         }
@@ -155,12 +165,16 @@ public class Rifle : MonoBehaviour
             {
                 zombie1.zombieHitDamage(giveDamegeOf);
                 GameObject goreEffectGo = Instantiate(goreEffect, hitinfo.point, Quaternion.LookRotation(hitinfo.normal));
+                GameObject Woodgo = Instantiate(WoodedEffect, hitinfo.point, Quaternion.LookRotation(hitinfo.normal));
+                Destroy(Woodgo, 1f);
                 Destroy(goreEffectGo, 0.5f);
             }
             else if (zombie2 != null)
             {
                 zombie2.zombieHitDamage(giveDamegeOf);
                 GameObject goreEffectGo = Instantiate(goreEffect, hitinfo.point, Quaternion.LookRotation(hitinfo.normal));
+                GameObject Woodgo = Instantiate(WoodedEffect, hitinfo.point, Quaternion.LookRotation(hitinfo.normal));
+                Destroy(Woodgo, 1f);
                 Destroy(goreEffectGo, 0.5f);
             }
         }
@@ -195,6 +209,12 @@ public class Rifle : MonoBehaviour
         setReloading = false;
         muzzleSpark.Stop();
 
+    }
+    IEnumerator showAmmoOut()
+    {
+        AmmoOutUI.SetActive(true);
+        yield return new WaitForSeconds(5f);
+        AmmoOutUI.SetActive(false);
     }
 
 }

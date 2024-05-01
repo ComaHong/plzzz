@@ -12,11 +12,11 @@ public class AmmoCount : MonoBehaviour
 
     private void Awake()
     {
-       if (Instance == null)
+        if (Instance == null)
         {
             Instance = this;
         }
-        
+
     }
     public void UpdateAmmoText(int presentAmmo)
     {
