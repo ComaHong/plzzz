@@ -223,7 +223,7 @@ public class PlayerController : MonoBehaviour
         if (spbar && isGround)
         {
             Debug.Log("JUMP");
-            anim.SetTrigger("Jump");
+            anim.SetTrigger("spbar");
             isGround = false;
             var force = Vector3.up * 5;
             rb.velocity = force;

@@ -10,22 +10,27 @@ public class ZombieSpawn : MonoBehaviour
     public GameObject dangerZone1; //좀비의 스폰 위치(dangerZone)
     private float repeatCycle = 1f; // 스폰시간단위
 
+    // 오디오
+    public AudioClip DangerZoneSound; // 위험지역 발생사운드
+    public AudioSource audioSource; // 오디오소스
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player")
         {
             InvokeRepeating("EnemySpawner", 1f, repeatCycle);
+            audioSource.PlayOneShot(DangerZoneSound);
             StartCoroutine(dangerZoneTimer());
             Destroy(gameObject, 10f);
             gameObject.GetComponent<BoxCollider>().enabled = false;

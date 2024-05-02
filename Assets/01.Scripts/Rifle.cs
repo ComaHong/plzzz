@@ -17,6 +17,7 @@ public class Rifle : MonoBehaviour
     public Transform hand; // 핸드 위치
     public Animator anim; // 플레이어 애니메이터
     public GameObject rifleUI; // 총알 UI
+    public GameObject akmObject; // 총 오브젝트
 
     [Header("Rifle Ammunition and shooting")]// 총알과 슈팅
     private int maximumammunition = 32;
@@ -30,8 +31,11 @@ public class Rifle : MonoBehaviour
     public GameObject WoodedEffect; // 총알이 박힘을 알려주는 나무 이펙트 파티클
     public GameObject goreEffect; // 좀비가 피격당함을 알 수 있는 피 이펙트 파티클
 
-
+    [Header("Rifle Sound and UI")]
     public GameObject AmmoOutUI; // 총알표시 UI
+    public AudioClip shootingSound; // 총 발사 소리
+    public AudioClip reloadingSound; // 총 장전 소리
+    public AudioSource audioSource; // 오디오소스
 
     // 이 스크립트가 켜질때마다 실행되는 메서드
     private void OnEnable()
@@ -51,10 +55,6 @@ public class Rifle : MonoBehaviour
         transform.SetParent(hand);
         // 현재 총알을 최대 총알로 변경
         presentAmmunition = maximumammunition;
-
-
-
-
 
     }
 
@@ -119,6 +119,17 @@ public class Rifle : MonoBehaviour
             // FireWalk 애니메이션 중지
             anim.SetBool("FireWalk", false);
         }
+        // AKM 오브젝트의 활성화 여부에 따라 애니메이션 실행
+        if (akmObject.activeSelf)
+        {
+            // AKM이 활성화되어 있으면 RifleWalk 애니메이션 실행
+            anim.SetBool("RIfleWalk", true);
+        }
+        else
+        {
+            // AKM이 비활성화되어 있으면 RifleWalk 애니메이션 정지
+            anim.SetBool("RifleWalk", false);
+        }
 
     }
     private void Shoot()
@@ -143,8 +154,8 @@ public class Rifle : MonoBehaviour
         // AmmoCount 스크립트의 UpdateMagText 메서드에 mag 매개변수를 할당
         AmmoCount.Instance.UpdateMagText(mag);
 
-        // 총을 쏘고 있음을 표시
-        //Invoke("StopShooting", muzzleSpark.main.duration); // 파티클의 재생 시간 이후에 발사를 중단하도록 설정
+        //muzzleSpark.Play();
+        audioSource.PlayOneShot(shootingSound);
         RaycastHit hitinfo;
 
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hitinfo, shootingRange))
@@ -200,6 +211,7 @@ public class Rifle : MonoBehaviour
         // 애니메이션 실행
         anim.SetTrigger("Reload");
         // 장전 소리 실행
+        audioSource.PlayOneShot(reloadingSound);
         yield return new WaitForSeconds(reloadingTime);
         // 애니메이션 실행
         //anim.SetBool("Reloading", false);
