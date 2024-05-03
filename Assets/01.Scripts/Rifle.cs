@@ -68,7 +68,7 @@ public class Rifle : MonoBehaviour
         if (presentAmmunition <= 0 || Input.GetKeyDown(KeyCode.R))
         {
             StartCoroutine(Reload());
-
+            
         }
 
         //if (Input.GetKeyDown(KeyCode.R))
@@ -209,6 +209,7 @@ public class Rifle : MonoBehaviour
         setReloading = true;
         Debug.Log("장전중...");
         // 애니메이션 실행
+        muzzleSpark.Stop();
         anim.SetTrigger("Reload");
         // 장전 소리 실행
         audioSource.PlayOneShot(reloadingSound);
@@ -219,7 +220,7 @@ public class Rifle : MonoBehaviour
         playerController.walkSpeed = 1.9f;
         playerController.runSpeed = 3;
         setReloading = false;
-        muzzleSpark.Stop();
+        
 
     }
     IEnumerator showAmmoOut()

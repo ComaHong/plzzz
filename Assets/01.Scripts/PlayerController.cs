@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     public GameObject EndgameMenu; // 엔드게임 메뉴패널
 
 
-    public Transform centerTr;
+    public Transform centerTr; // 플레이어의 center Transform
     public Transform player; // 플레이어의 Transform
     public Animator anim; // 플레이어의 애니메이터
     public GameObject cam; // 카메라
@@ -35,9 +35,9 @@ public class PlayerController : MonoBehaviour
     private float v; // 플레이어의 좌우 입력을 받을 vertical변수
     private float mouseX;
     private float mouseY;
-    private bool spbar; // 플레이어가 점프 했는지 확인할 bool 변수
+    private bool spbar; // 플레이어가 점프 했는지 확인할 bool타입 변수
     private Rigidbody rb; // 플레이어의 리지드바디
-    public bool Crouch = false;
+    public bool Crouch = false; //v 플레이어가 앉아있는지 확인할 bool타입 변수
     public bool isGround = false; // 땅을 밟고 있는지 확인할 bool 변수
 
 

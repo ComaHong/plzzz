@@ -15,7 +15,7 @@ public class HealthBoost : MonoBehaviour
 
     // 아이템을 먹으면 할당해줄 체력
     private float healthToGive = 120f;
-    // 아이템의 반지름으로 닿음을 판단할 변수
+    // 아이템의 닿음을 알려 줄 반경 변수
     private float radius = 2.5f;
 
     private void Update()
@@ -33,7 +33,7 @@ public class HealthBoost : MonoBehaviour
                 // healthBoostSound클립을 한번재생
                 audioSource.PlayOneShot(healthBoostSound);
                 // 아이템 1.5초뒤에 파괴
-                //Destroy(gameObject, 5f);
+                Destroy(gameObject, 1.3f);
             }
         }
     }
