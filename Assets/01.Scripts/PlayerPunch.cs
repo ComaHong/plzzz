@@ -9,7 +9,7 @@ public class PlayerPunch : MonoBehaviour
     public float giveDamegeOf = 10f;// 펀치로 가할 데미지
     public float punchingRnage = 2f; // 펀치의 사정거리
     
-    [Header("Punch Effects")] //플레이어 펀치 이펙트 헤더
+    [Header("Punch Effects")] // 플레이어 펀치 이펙트 헤더
     public GameObject WoodedEffect; // 펀치 이펙트
 
     // 레이캐스트를 사용하는 펀치 메서드

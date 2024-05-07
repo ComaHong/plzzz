@@ -20,11 +20,11 @@ public class Rifle : MonoBehaviour
     public GameObject akmObject; // 총 오브젝트
 
     [Header("Rifle Ammunition and shooting")]// 총알과 슈팅
-    private int maximumammunition = 32;
-    public int mag = 10;
-    private int presentAmmunition;
-    public float reloadingTime = 2.0f;
-    private bool setReloading = false;
+    private int maximumammunition = 32; // 최대 총알 수
+    public int mag = 10; // 탄창에 들어있는 총알 수
+    private int presentAmmunition; // 현재 총알 수
+    public float reloadingTime = 2.0f; // 장전 시간
+    private bool setReloading = false; // 장전 중인지 여부를 나타내는 플래그
 
     [Header("Rifle Effects")] //총기 이펙트
     public ParticleSystem muzzleSpark; // 사용할 총기화염 파티클
@@ -36,6 +36,8 @@ public class Rifle : MonoBehaviour
     public AudioClip shootingSound; // 총 발사 소리
     public AudioClip reloadingSound; // 총 장전 소리
     public AudioSource audioSource; // 오디오소스
+    private float h;
+    private float v;
 
     // 이 스크립트가 켜질때마다 실행되는 메서드
     private void OnEnable()
@@ -59,39 +61,37 @@ public class Rifle : MonoBehaviour
     }
 
     void Update()
-    {// 리로딩이 진행되면 더이상 코드가 실행되지못하고 if문을 빠져나감
+    { // 장전 중인 경우 코드 실행 중지
         if (setReloading)
         {
             return;
         }
-        // 총알이 0보다 작거나 같거나 키보드 R키를 눌렀을떄 실행될 코드
+        // 총알이 0 이하이거나 R 키를 누르면 재장전 시작
         if (presentAmmunition <= 0 || Input.GetKeyDown(KeyCode.R))
         {
             StartCoroutine(Reload());
-            
+
         }
 
-        //if (Input.GetKeyDown(KeyCode.R))
-        //{
-        //    StartCoroutine(Reload());
-        //    return;
-        //}
-
-        // 마우스 왼쪽버튼을 누르고 게임내에서의 시간이 다음 슈팅시간과 같더나 더 클때 실행될 코드
-        if (Input.GetButton("Fire1") && Time.time >= nextTimeToShoot)
+        // 마우스 왼쪽버튼을 누르고 게임내에서의 시간이 다음 발사시간이상일때 실행될 코드
+        if (Input.GetButton("Fire1")/* && Time.time >= nextTimeToShoot*/)
         {
-            muzzleSpark.Play();
+            // 총구화염 파티클 재생
+            //muzzleSpark.Play();
+            // FIre 애니메이션 재생
             anim.SetBool("Fire", true);
+            // Idle 애니메이션 정지
             anim.SetBool("Idle", false);
+            // 다음 총 발사 시간 설정
             nextTimeToShoot = Time.time + 1f / fireCharge;
             Shoot();
         }
         // 마우스 왼쪽버튼이 떼졌을떄
         else if (Input.GetButtonUp("Fire1"))
         {
-            // 총기화염파티클 멈춤
-            muzzleSpark.Stop();
-            // Idle 애니메이션 중지
+            // 총구화염파티클 멈춤
+            //muzzleSpark.Stop();
+            // Idle 애니메이션 정지
             anim.SetBool("Idle", false);
             // FireWalk 애니메이션 실행
             anim.SetBool("FireWalk", true);
@@ -103,12 +103,20 @@ public class Rifle : MonoBehaviour
             anim.SetBool("Idle", false);
             // IdleAim 애니메이션 실행
             anim.SetBool("IdleAim", true);
-            // FireWalk 애니메이션 실행
-            anim.SetBool("FireWalk", true);
+
+            h = Input.GetAxisRaw("Horizontal");
+            v = Input.GetAxisRaw("Vertical");
+            Vector3 direction = new Vector3(h, 0f, v).normalized;
+            // 입력된 방향에 따라 애니메이션을 변경합니다.
+            if (direction.magnitude > 0.1f)
+            {
+                // FireWalk 애니메이션 실행
+                anim.SetBool("RifleWalk", true);
+            }
+               
             // Walk 애니메이션 실행
-            anim.SetBool("Walk", true);
-            //// Reloading 애니메이션 중지
-            //anim.SetBool("Reloading", false);
+            //anim.SetBool("Walk", true);
+           
         }
         else
         {
@@ -120,16 +128,16 @@ public class Rifle : MonoBehaviour
             anim.SetBool("FireWalk", false);
         }
         // AKM 오브젝트의 활성화 여부에 따라 애니메이션 실행
-        if (akmObject.activeSelf)
-        {
-            // AKM이 활성화되어 있으면 RifleWalk 애니메이션 실행
-            anim.SetBool("RIfleWalk", true);
-        }
-        else
-        {
-            // AKM이 비활성화되어 있으면 RifleWalk 애니메이션 정지
-            anim.SetBool("RifleWalk", false);
-        }
+        //if (akmObject.activeSelf)
+        //{
+        //    // AKM이 활성화되어 있으면 RifleWalk 애니메이션 실행
+        //    anim.SetBool("RIfleWalk", true);
+        //}
+        //else
+        //{
+        //    // AKM이 비활성화되어 있으면 RifleWalk 애니메이션 정지
+        //    anim.SetBool("RifleWalk", false);
+        //}
 
     }
     private void Shoot()
@@ -138,15 +146,22 @@ public class Rifle : MonoBehaviour
         // 총알 확인
         if (mag == 0)
         {
+            // 총알이 없는 경우 총알 부족 UI 활성화
             StartCoroutine(showAmmoOut());
-            muzzleSpark.Stop();
+            // 총구화염 파티클 멈춤
+            //muzzleSpark.Stop();
+            // Fire애니메이션 중지
             anim.SetBool("Fire", false);
             // 총알 텍스트
             return;
         }
+        muzzleSpark.Play();
+        // 현재 총알 수 감소
         presentAmmunition--;
+        // 현재 총알이 0이 되면 실행될 코드
         if (presentAmmunition == 0)
         {
+            // 탄창 수 감소
             mag--;
         }
         // AmmoCount 스크립트의 UpdateAmmoText 메서드에 presentAmmunition 매개변수를 할당
@@ -155,9 +170,11 @@ public class Rifle : MonoBehaviour
         AmmoCount.Instance.UpdateMagText(mag);
 
         //muzzleSpark.Play();
+        // 총 발사소리 한번 재생
         audioSource.PlayOneShot(shootingSound);
+        // 사용할 Raycast
         RaycastHit hitinfo;
-
+        // 총알이 맞은 대상에 따라 효과 및 데미지 적용
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hitinfo, shootingRange))
         {
             Debug.Log(hitinfo.transform.name);
@@ -190,43 +207,44 @@ public class Rifle : MonoBehaviour
             }
         }
     }
-    private void OnDrawGizmos()
-    {
-        // Ray 시작점을 카메라 위치로 설정
-        Vector3 rayOrigin = cam.transform.position;
-        // Ray 방향은 카메라의 전방 방향
-        Vector3 rayDirection = cam.transform.forward;
-
-        // Ray를 씬 뷰에 그림
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(rayOrigin, rayDirection * shootingRange);
-    }
-
+   
+    // 재장전 메서드
     IEnumerator Reload()
     {
+        // 플레이어 이동 속도 감소
         playerController.walkSpeed = 0f;
+        // 플레이어 뛰는 속도 감소
         playerController.runSpeed = 0f;
+        // 재장전상태 true
         setReloading = true;
         Debug.Log("장전중...");
-        // 애니메이션 실행
+        // 총구화염파티클 멈춤
         muzzleSpark.Stop();
+        // Reload애니메이션 실행
         anim.SetTrigger("Reload");
-        // 장전 소리 실행
+        // 장전 소리 한번 실행
         audioSource.PlayOneShot(reloadingSound);
+        // 재장전 시간을 기다림
         yield return new WaitForSeconds(reloadingTime);
-        // 애니메이션 실행
-        //anim.SetBool("Reloading", false);
+        // 현재 총알에 전체 총알을 할당
         presentAmmunition = maximumammunition;
+        // 플레이어 이동 속도 원래대로 되돌림
         playerController.walkSpeed = 1.9f;
-        playerController.runSpeed = 3;
+        // 플레이어 뛰는 속도 원래대로 되돌림
+        playerController.runSpeed = 3f;
+        // 재장전상태 false
         setReloading = false;
-        
+
 
     }
+    // 총알 부족 UI 표시
     IEnumerator showAmmoOut()
     {
+        // AmmoOutUI 켬
         AmmoOutUI.SetActive(true);
+        // 5초 기다림
         yield return new WaitForSeconds(5f);
+        // AmmoOutUI 끔
         AmmoOutUI.SetActive(false);
     }
 

@@ -4,56 +4,24 @@ using UnityEngine;
 
 public class FollowHead : MonoBehaviour
 {
-    private Animator playerAnimator;
-    public Transform target;
-
-    //public Transform leftHandMount;
-    //public Transform rightHandMount;
-
-    public float weight = 1f;
+    private Animator playerAnimator; // 플레이어의 애니메이터 컴포넌트를 저장할 변수
+    public Transform target; // 머리를 따라가게 할 대상의 위치를 나타내는 Transform 변수
+    public float weight = 1f; // 머리를 따라가는 정도를 결정하는 가중치 값
 
     // Start is called before the first frame update
     void Start()
     {
+        // 시작할 때 플레이어의 애니메이터 컴포넌트를 가져와서 저장
         playerAnimator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     private void OnAnimatorIK(int layerIndex)
     {
+        // 애니메이터의 머리를 target의 위치로 바라보도록 설정
         playerAnimator.SetLookAtPosition(target.position);
+        // 머리를 따라가는 정도를 설정 (가중치 적용)
         playerAnimator.SetLookAtWeight(weight);
-
-
-        //// IK를 사용하여 왼손의 위치와 회전을 총의 왼쪽 손잡이에 맞춤
-        //playerAnimator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1.0f);
-        //playerAnimator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1.0f);
-
-        //playerAnimator.SetIKPosition(AvatarIKGoal.LeftHand, leftHandMount.position);
-        //playerAnimator.SetIKRotation(AvatarIKGoal.LeftHand, leftHandMount.rotation);
-
-        //// IK를 사용하여 오른손의 위치와 회전을 총의 오른쪽 손잡이에 맞춤
-        //playerAnimator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1.0f);
-        //playerAnimator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1.0f);
-
-        //playerAnimator.SetIKPosition(AvatarIKGoal.RightHand, rightHandMount.position);
-        //playerAnimator.SetIKRotation(AvatarIKGoal.RightHand, rightHandMount.rotation);
-
-
-        //var clip  = anim.GetCurrentAnimatorClipInfo(0)[0].clip;
-
-        //anim.SetIKPosition(AvatarIKGoal.LeftHand , slaphand.position);
-        //if (clip.name == "punch")
-        //{
-        //    var time = anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
-        //    animSlap.Play("slap", 0, time);
-        //    anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
-        //}
-        //else
-        //{
-        //    anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0);
-        //}
-
     }
 
 

@@ -11,7 +11,7 @@ public class Objective2 : MonoBehaviour
         {
             // 미션 완료
             ObjectivesComplete.occurrence.GetobjectivesDone(true, true, false, false);
-
+            // 오브젝트 2초후 파괴;
           Destroy(gameObject, 2f);
         }
     }

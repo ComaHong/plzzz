@@ -11,10 +11,12 @@ public class UIManager : MonoBehaviour
     public GameObject EndGameMenuUI;
     public GameObject ObjectiveMenuUI;
 
-
-
     public static bool GameIsStopped = false;
 
+    private void Start()
+    {
+        showObjectives();
+    }
 
     public void Update()
     {
@@ -45,13 +47,14 @@ public class UIManager : MonoBehaviour
             }
         }
     }
+    // 목표오브젝트들을 보여주는 UI를 활성화시키는 메서드
     public void showObjectives()
     {
         ObjectiveMenuUI.SetActive(true);
         Time.timeScale = 0f;
         GameIsStopped = true;
     }
-
+    // 목표오브젝트들을 보여주는 UI를 비활성화시키는 메서드
     public void removeObjective()
     {
         ObjectiveMenuUI.SetActive(false);
@@ -60,7 +63,7 @@ public class UIManager : MonoBehaviour
         GameIsStopped = false;
     }
 
-
+    // 게임을 다시 재개하는 메서드 버튼
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
@@ -74,18 +77,19 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
 
     }
-
+    // 메인 메뉴씬을 로드하는 메서드 버튼
     public void LoadMenu()
     {
-        // 메뉴 로드
+        // 메인메뉴 씬을 로드합니다
         SceneManager.LoadScene("MainMenu");
     }
-
+    // 게임을 종료하는 메서드 버튼
     public void QuitGame()
     {
         Debug.Log("게임 끄는중. . . ");
         Application.Quit();
     }
+    // 게임을 중지시키는 메서드 버튼
     void Pause()
     {
         pauseMenuUI.SetActive(true);
