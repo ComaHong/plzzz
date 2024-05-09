@@ -17,7 +17,7 @@ public class Rifle : MonoBehaviour
     public Transform hand; // 핸드 위치
     public Animator anim; // 플레이어 애니메이터
     public GameObject rifleUI; // 총알 UI
-    public GameObject akmObject; // 총 오브젝트
+    
 
     [Header("Rifle Ammunition and shooting")]// 총알과 슈팅
     private int maximumammunition = 32; // 최대 총알 수
@@ -127,17 +127,7 @@ public class Rifle : MonoBehaviour
             // FireWalk 애니메이션 중지
             anim.SetBool("FireWalk", false);
         }
-        // AKM 오브젝트의 활성화 여부에 따라 애니메이션 실행
-        //if (akmObject.activeSelf)
-        //{
-        //    // AKM이 활성화되어 있으면 RifleWalk 애니메이션 실행
-        //    anim.SetBool("RIfleWalk", true);
-        //}
-        //else
-        //{
-        //    // AKM이 비활성화되어 있으면 RifleWalk 애니메이션 정지
-        //    anim.SetBool("RifleWalk", false);
-        //}
+        
 
     }
     private void Shoot()

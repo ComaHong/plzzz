@@ -1,6 +1,7 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.Rendering.Universal;
@@ -26,6 +27,7 @@ public class PlayerController : MonoBehaviour
     public Transform player; // 플레이어의 Transform
     public Animator anim; // 플레이어의 애니메이터
     public GameObject cam; // 3인칭시점카메라
+    public GameObject akmObject; // 총 오브젝트
     /* public Text cartext;*/ // 차량 상호작용할 메시지
 
     /// <summary>
@@ -36,6 +38,7 @@ public class PlayerController : MonoBehaviour
     private float mouseX; // 카메라가 입력받을 마우스 X축값
     private float mouseY; // 카메라가 입력받을 마우스 Y축값
     private bool spbar; // 플레이어가 점프 했는지 확인할 bool타입 변수
+
     private Rigidbody rb; // 플레이어의 리지드바디 컴포넌트
     public bool Crouch = false; //v 플레이어가 앉아있는지 확인할 bool타입 변수
     public bool isGround = false; // 땅을 밟고 있는지 확인할 bool 변수
@@ -58,6 +61,7 @@ public class PlayerController : MonoBehaviour
         MoveAndRotate();
         Run();
         Jump();
+
 
         // C키를 눌렀고 플레이어가 앉아있지 않다면 실행할 코드
         if (Input.GetKeyDown(KeyCode.C) && !Crouch)
@@ -111,7 +115,7 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-  // 플레이어의 이동을 담당하는 메서드
+    // 플레이어의 이동을 담당하는 메서드
     private void GetPlayerInputs()
     {
         // 플레이어의 수평 및 수직 입력을 가져옵니다.
@@ -120,30 +124,49 @@ public class PlayerController : MonoBehaviour
 
         // 새로운 Vector3 방향값 
         Vector3 direction = new Vector3(h, 0f, v).normalized;
+        bool isAKMActive = akmObject.activeSelf;
         // 입력된 방향에 따라 애니메이션을 변경합니다.
         if (direction.magnitude > 0.1f)
         {
             // 이동 중일 때의 애니메이션을 설정합니다.
             anim.SetBool("Idle", false);
             anim.SetBool("Walk", true);
-            //anim.SetBool("Run", false);
+            anim.SetBool("Run", false);
 
-            // 걷는 동안은 다른 애니메이션은 비활성화합니다.
-            anim.SetBool("RifleWalk", false);
-            anim.SetBool("IdleAim", false);
-
+            // AKM이 활성화되어 있을 때
+            if (isAKMActive == true)
+            {
+                // RifleWalk 애니메이션을 활성화합니다.
+                anim.SetBool("RifleWalk", true);
+            }
+            else
+            {
+                // AKM이 비활성화되어 있을 때 RifleWalk 애니메이션은 비활성화하고 Walk 애니메이션을 활성화합니다.
+                anim.SetBool("RifleWalk", false);
+                anim.SetBool("Walk", true);
+            }
         }
         else
         {
             // 정지 상태일 때의 애니메이션을 설정합니다.
             anim.SetBool("Idle", true);
             anim.SetBool("Walk", false);
-            //anim.SetBool("Run", false);
+            anim.SetBool("Run", false);
+
+            // AKM이 비활성화되어 있을 때 RifleWalk 애니메이션은 비활성화합니다.
+            if (isAKMActive == false)
+            {
+                anim.SetBool("RifleWalk", false);
+                anim.SetBool("RIfleIdle", false);
+                anim.SetBool("RIfleRun", false);
+
+                anim.SetBool("Idle", true);
+            }
         }
 
         // 뒤로 이동할 때의 이동 속도를 줄입니다.
         if (v < 0) v *= 0.6F;
-                // 마우스 입력 값을 가져옵니다.
+        // 마우스 입력 값을 가져옵니다.
         mouseX = Input.GetAxis("Mouse X");
         mouseY = Input.GetAxis("Mouse Y");
 
@@ -170,7 +193,7 @@ public class PlayerController : MonoBehaviour
         //    else guncamera.depth = -1;
         //}
     }
-    
+
     // 플레이어의 이동 및 회전을 처리할 메서드
     private void MoveAndRotate()
     {
@@ -186,6 +209,7 @@ public class PlayerController : MonoBehaviour
     // 플레이어의 달리기 동작을 처리할 메서드
     private void Run()
     {
+        bool isAKMActive = akmObject.activeSelf;
         if (Input.GetKey(KeyCode.LeftShift))
         {
             h = Input.GetAxisRaw("Horizontal");
@@ -197,17 +221,36 @@ public class PlayerController : MonoBehaviour
                 // 달리기 중일 때의 애니메이션을 설정합니다.
                 anim.SetBool("Walk", false);
                 anim.SetBool("Run", true);
+                //anim.SetBool("Attack", true);
                 anim.SetBool("Fire", false);
                 Debug.Log("뛰기");
                 // 달리는 동안 이동 벡터를 계산하여 Rigidbody를 이용해 이동합니다.
                 Vector3 run = ((transform.forward * v) + (transform.right * h)) * runSpeed * Time.deltaTime;
                 rb.MovePosition(rb.position + run);
+                if (akmObject.activeSelf)
+                {
+                    // AKM이 활성화되어 있으면 RifleWalk 애니메이션 실행
+                    // anim.SetBool("RIfleWalk", true);
+                    anim.SetBool("RifleRun", true);
+                }
+                else
+                {
+                    // AKM이 비활성화되어 있으면 RifleWalk 애니메이션 정지
+                    // anim.SetBool("RifleWalk", false);
+
+                }
             }
+            // AKM 오브젝트의 활성화 여부에 따라 애니메이션 실행
+
         }
         else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             // 달리기를 멈출 때의 애니메이션을 설정합니다.
             anim.SetBool("Run", false);
+            anim.SetBool("RifleRun", false);
+            anim.SetBool("RifleIdle", true);
+
+
         }
     }
     // 플레이어의 점프 동작을 처리할 메서드
@@ -266,5 +309,6 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         playerDamage.SetActive(false);
     }
+
 
 }

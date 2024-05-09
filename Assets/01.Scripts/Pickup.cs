@@ -56,6 +56,8 @@ public class Pickup : MonoBehaviour
                 playerRifle.SetActive(true);
                 // 픽업한 총의 오브젝트를 비활성화
                 PickupRifle.SetActive(false);
+                // RIfleIdle 애니메이션 재생
+                anim.SetBool("RifleIdle", true);
                 // 소리
 
                 // 정적처리 된 objectiveComplete스크립트의 GetobjectivesDone메서드를 실행 첫번째 목표를 true로 변경 나머지 목표들은 그대로 false
