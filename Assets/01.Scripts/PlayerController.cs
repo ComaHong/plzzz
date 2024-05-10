@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb; // 플레이어의 리지드바디 컴포넌트
     public bool Crouch = false; //v 플레이어가 앉아있는지 확인할 bool타입 변수
     public bool isGround = false; // 땅을 밟고 있는지 확인할 bool 변수
+    public bool isAKMActive;
 
     // 시작하면 사용될 메서드
     void Start()
@@ -124,7 +125,7 @@ public class PlayerController : MonoBehaviour
 
         // 새로운 Vector3 방향값 
         Vector3 direction = new Vector3(h, 0f, v).normalized;
-        bool isAKMActive = akmObject.activeSelf;
+        
         // 입력된 방향에 따라 애니메이션을 변경합니다.
         if (direction.magnitude > 0.1f)
         {
@@ -132,17 +133,21 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("Idle", false);
             anim.SetBool("Walk", true);
             anim.SetBool("Run", false);
-
+            
             // AKM이 활성화되어 있을 때
-            if (isAKMActive == true)
+            if (akmObject.activeSelf)
             {
+                Debug.Log("ak활성화");
                 // RifleWalk 애니메이션을 활성화합니다.
                 anim.SetBool("RifleWalk", true);
+                Debug.Log("총들고 움직임");
             }
             else
             {
                 // AKM이 비활성화되어 있을 때 RifleWalk 애니메이션은 비활성화하고 Walk 애니메이션을 활성화합니다.
-                anim.SetBool("RifleWalk", false);
+                //anim.SetBool("RifleWalk", false);
+                anim.SetBool("RifleIdle", false);
+                anim.SetBool("RifleRun", false);
                 anim.SetBool("Walk", true);
             }
         }
@@ -154,14 +159,26 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("Run", false);
 
             // AKM이 비활성화되어 있을 때 RifleWalk 애니메이션은 비활성화합니다.
-            if (isAKMActive == false)
+            if (!akmObject.activeSelf)
             {
-                anim.SetBool("RifleWalk", false);
+                Debug.Log("ak비활성화");
+                //anim.SetBool("RifleWalk", false);
                 anim.SetBool("RIfleIdle", false);
                 anim.SetBool("RIfleRun", false);
-
                 anim.SetBool("Idle", true);
             }
+            else
+            {
+                anim.SetBool("RifleWalk", false);
+            }
+        }
+        if (akmObject.activeSelf)
+        {
+            anim.SetBool("RifleIdle", true);
+        }
+        else
+        {
+            anim.SetBool("RifleIdle", false);
         }
 
         // 뒤로 이동할 때의 이동 속도를 줄입니다.
@@ -209,7 +226,7 @@ public class PlayerController : MonoBehaviour
     // 플레이어의 달리기 동작을 처리할 메서드
     private void Run()
     {
-        bool isAKMActive = akmObject.activeSelf;
+        isAKMActive = akmObject.activeSelf;
         if (Input.GetKey(KeyCode.LeftShift))
         {
             h = Input.GetAxisRaw("Horizontal");
@@ -222,7 +239,7 @@ public class PlayerController : MonoBehaviour
                 anim.SetBool("Walk", false);
                 anim.SetBool("Run", true);
                 //anim.SetBool("Attack", true);
-                anim.SetBool("Fire", false);
+                //anim.SetBool("Fire", false);
                 Debug.Log("뛰기");
                 // 달리는 동안 이동 벡터를 계산하여 Rigidbody를 이용해 이동합니다.
                 Vector3 run = ((transform.forward * v) + (transform.right * h)) * runSpeed * Time.deltaTime;
@@ -230,7 +247,7 @@ public class PlayerController : MonoBehaviour
                 if (akmObject.activeSelf)
                 {
                     // AKM이 활성화되어 있으면 RifleWalk 애니메이션 실행
-                    // anim.SetBool("RIfleWalk", true);
+
                     anim.SetBool("RifleRun", true);
                 }
                 else
@@ -248,22 +265,35 @@ public class PlayerController : MonoBehaviour
             // 달리기를 멈출 때의 애니메이션을 설정합니다.
             anim.SetBool("Run", false);
             anim.SetBool("RifleRun", false);
-            anim.SetBool("RifleIdle", true);
+            
+            if (akmObject.activeSelf)
+            {
+                // AKM이 활성화되어 있으면 RifleWalk 애니메이션 실행
+
+                anim.SetBool("RifleIdle", true);
+            }
+            else
+            {
+                // AKM이 비활성화되어 있으면 RifleWalk 애니메이션 정지
+                 anim.SetBool("Idle", true);
+
+            }
 
 
         }
+        if (v < 0) v *= 0.6F;
     }
     // 플레이어의 점프 동작을 처리할 메서드
     void Jump()
     {
         spbar = Input.GetKeyDown(KeyCode.Space);
         if (spbar) Debug.Log("점프키 누름");
-        Debug.Log(isGround);
+     
         if (spbar && isGround)
         {
             Debug.Log("JUMP");
             // 점프 애니메이션을 재생합니다.
-            anim.SetTrigger("spbar");
+            anim.SetTrigger("Jump");
             // 땅에 닿음을 false로 변경합니다.
             isGround = false;
             // 플레이어를 위쪽으로 이동시켜 점프 효과를 줍니다.

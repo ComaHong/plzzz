@@ -23,7 +23,7 @@ public class Rifle : MonoBehaviour
     private int maximumammunition = 32; // 최대 총알 수
     public int mag = 10; // 탄창에 들어있는 총알 수
     private int presentAmmunition; // 현재 총알 수
-    public float reloadingTime = 2.0f; // 장전 시간
+    public float reloadingTime = 2.767f; // 장전 시간
     private bool setReloading = false; // 장전 중인지 여부를 나타내는 플래그
 
     [Header("Rifle Effects")] //총기 이펙트
@@ -55,6 +55,8 @@ public class Rifle : MonoBehaviour
         Debug.Log("총획득");
         // 총의 위치값을 손 오브젝트의 부모로 등록
         transform.SetParent(hand);
+        playerController.isAKMActive = playerController.akmObject.activeSelf;
+        anim.SetBool("RifleIdle", true);
         // 현재 총알을 최대 총알로 변경
         presentAmmunition = maximumammunition;
 
@@ -82,6 +84,7 @@ public class Rifle : MonoBehaviour
             anim.SetBool("Fire", true);
             // Idle 애니메이션 정지
             anim.SetBool("Idle", false);
+            anim.SetBool("RifleIdle", false);
             // 다음 총 발사 시간 설정
             nextTimeToShoot = Time.time + 1f / fireCharge;
             Shoot();
