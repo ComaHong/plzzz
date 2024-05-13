@@ -29,6 +29,10 @@ public class PlayerController : MonoBehaviour
     public GameObject cam; // 3인칭시점카메라
     public GameObject akmObject; // 총 오브젝트
     /* public Text cartext;*/ // 차량 상호작용할 메시지
+    [Header("Test")]
+    public GameObject obj1; // 1번 게임 오브젝트
+    public Animator animator2; // 2번 애니메이터
+    private bool fKeyPressed = false;
 
     /// <summary>
     /// private필드
@@ -53,6 +57,7 @@ public class PlayerController : MonoBehaviour
         hpSlider.GiveFullHealth(playerHealth); // 플레이어의 Silder Ui의 MaxValue와 Value에 플레이어의 체력을 할당
 
 
+
     }
 
     // 계속 업데이트 체킹할 메서드
@@ -63,6 +68,23 @@ public class PlayerController : MonoBehaviour
         Run();
         Jump();
 
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            if (!fKeyPressed)
+            {
+
+                anim.SetBool("Flying", true);
+                fKeyPressed = true;
+            }
+            else
+            {
+                // F 키를 연속으로 두 번 눌렀을 때 실행할 코드
+                obj1.SetActive(true);
+                animator2.SetBool("Open", true);
+                anim.SetBool("Holding", true);
+            }
+
+        }
 
         // C키를 눌렀고 플레이어가 앉아있지 않다면 실행할 코드
         if (Input.GetKeyDown(KeyCode.C) && !Crouch)
@@ -95,6 +117,8 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGround = true;
+
+            anim.SetBool("Jumping", true);
         }
 
     }
@@ -104,6 +128,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGround = true;
+            anim.SetBool("Jumping", true);
         }
 
     }
@@ -125,7 +150,7 @@ public class PlayerController : MonoBehaviour
 
         // 새로운 Vector3 방향값 
         Vector3 direction = new Vector3(h, 0f, v).normalized;
-        
+
         // 입력된 방향에 따라 애니메이션을 변경합니다.
         if (direction.magnitude > 0.1f)
         {
@@ -133,7 +158,7 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("Idle", false);
             anim.SetBool("Walk", true);
             anim.SetBool("Run", false);
-            
+
             // AKM이 활성화되어 있을 때
             if (akmObject.activeSelf)
             {
@@ -265,7 +290,7 @@ public class PlayerController : MonoBehaviour
             // 달리기를 멈출 때의 애니메이션을 설정합니다.
             anim.SetBool("Run", false);
             anim.SetBool("RifleRun", false);
-            
+
             if (akmObject.activeSelf)
             {
                 // AKM이 활성화되어 있으면 RifleWalk 애니메이션 실행
@@ -275,7 +300,7 @@ public class PlayerController : MonoBehaviour
             else
             {
                 // AKM이 비활성화되어 있으면 RifleWalk 애니메이션 정지
-                 anim.SetBool("Idle", true);
+                anim.SetBool("Idle", true);
 
             }
 
@@ -288,12 +313,12 @@ public class PlayerController : MonoBehaviour
     {
         spbar = Input.GetKeyDown(KeyCode.Space);
         if (spbar) Debug.Log("점프키 누름");
-     
+
         if (spbar && isGround)
         {
             Debug.Log("JUMP");
             // 점프 애니메이션을 재생합니다.
-            anim.SetTrigger("Jump");
+            anim.SetBool("Jumping", true);
             // 땅에 닿음을 false로 변경합니다.
             isGround = false;
             // 플레이어를 위쪽으로 이동시켜 점프 효과를 줍니다.
@@ -339,6 +364,48 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         playerDamage.SetActive(false);
     }
+    //void test1()
+    //{
+    //    // 초기에는 1번 게임 오브젝트가 활성화되어 있을 때만 처리합니다.
+    //    if (obj1.activeSelf)
+    //    {
+    //        // 2번 애니메이터를 활성화하고, 3번 애니메이터를 비활성화합니다.
+    //        animator2.gameObject.SetActive(true);
+    //        animator2.Play("Flying");
+    //        anim.gameObject.SetActive(false);
+    //    }
+    //    else
+    //    {
+    //        // 1번 게임 오브젝트가 비활성화되어 있을 때는 2번 애니메이터를 비활성화하고, 3번 애니메이터를 활성화합니다.
+    //        animator2.gameObject.SetActive(false);
+    //        anim.gameObject.SetActive(true);
 
+    //    }
+    //}
+    //void test2()
+    //{
+    //    // 매 프레임마다 1번 게임 오브젝트의 활성화 여부를 확인하여 상태를 변경합니다.
+    //    if (obj1.activeSelf)
+    //    {
+    //        if (!animator2.gameObject.activeSelf)
+    //        {
+    //            // 1번 게임 오브젝트가 활성화되어 있고, 2번 애니메이터가 비활성화되어 있으면 활성화합니다.
+    //            animator2.gameObject.SetActive(true);
+    //            animator2.Play("Animation2");
+    //            anim.gameObject.SetActive(false);
+    //        }
+    //    }
+    //    else
+    //    {
+    //        if (!anim.gameObject.activeSelf)
+    //        {
+    //            // 1번 게임 오브젝트가 비활성화되어 있고, 3번 애니메이터가 비활성화되어 있으면 활성화합니다.
+    //            animator2.gameObject.SetActive(false);
+    //            anim.gameObject.SetActive(true);
 
+    //        }
+    //    }
+    //}
 }
+
+

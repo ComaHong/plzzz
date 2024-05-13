@@ -17,7 +17,7 @@ public class Rifle : MonoBehaviour
     public Transform hand; // 핸드 위치
     public Animator anim; // 플레이어 애니메이터
     public GameObject rifleUI; // 총알 UI
-    
+
 
     [Header("Rifle Ammunition and shooting")]// 총알과 슈팅
     private int maximumammunition = 32; // 최대 총알 수
@@ -63,18 +63,25 @@ public class Rifle : MonoBehaviour
     }
 
     void Update()
-    { // 장전 중인 경우 코드 실행 중지
+    {
+        h = Input.GetAxisRaw("Horizontal");
+        v = Input.GetAxisRaw("Vertical");
+        Vector3 direction = new Vector3(h, 0f, v).normalized;
+        // 장전 중인 경우 코드 실행 중지
         if (setReloading)
         {
             return;
         }
         // 총알이 0 이하이거나 R 키를 누르면 재장전 시작
-        if (presentAmmunition <= 0 || Input.GetKeyDown(KeyCode.R))
+        if (presentAmmunition <= 0 )
         {
             StartCoroutine(Reload());
-
         }
-
+        else if(Input.GetKeyDown(KeyCode.R) && presentAmmunition < maximumammunition)
+        {
+            StartCoroutine(Reload());
+        }
+        
         // 마우스 왼쪽버튼을 누르고 게임내에서의 시간이 다음 발사시간이상일때 실행될 코드
         if (Input.GetButton("Fire1")/* && Time.time >= nextTimeToShoot*/)
         {
@@ -84,6 +91,7 @@ public class Rifle : MonoBehaviour
             anim.SetBool("Fire", true);
             // Idle 애니메이션 정지
             anim.SetBool("Idle", false);
+            // RIfleIdle 애니메이션 정지
             anim.SetBool("RifleIdle", false);
             // 다음 총 발사 시간 설정
             nextTimeToShoot = Time.time + 1f / fireCharge;
@@ -107,19 +115,9 @@ public class Rifle : MonoBehaviour
             // IdleAim 애니메이션 실행
             anim.SetBool("IdleAim", true);
 
-            h = Input.GetAxisRaw("Horizontal");
-            v = Input.GetAxisRaw("Vertical");
-            Vector3 direction = new Vector3(h, 0f, v).normalized;
-            // 입력된 방향에 따라 애니메이션을 변경합니다.
-            if (direction.magnitude > 0.1f)
-            {
-                // FireWalk 애니메이션 실행
-                anim.SetBool("RifleWalk", true);
-            }
-               
             // Walk 애니메이션 실행
-            //anim.SetBool("Walk", true);
-           
+            anim.SetBool("Walk", true);
+
         }
         else
         {
@@ -130,7 +128,13 @@ public class Rifle : MonoBehaviour
             // FireWalk 애니메이션 중지
             anim.SetBool("FireWalk", false);
         }
-        
+        // 입력된 방향에 따라 애니메이션을 변경합니다.
+        if (direction.magnitude > 0.1f)
+        {
+            // FireWalk 애니메이션 실행
+            anim.SetBool("Walk", true);
+        }
+
 
     }
     private void Shoot()
@@ -200,12 +204,12 @@ public class Rifle : MonoBehaviour
             }
         }
     }
-   
+
     // 재장전 메서드
     IEnumerator Reload()
     {
         // 플레이어 이동 속도 감소
-        playerController.walkSpeed = 0f;
+        playerController.walkSpeed = 0.8f;
         // 플레이어 뛰는 속도 감소
         playerController.runSpeed = 0f;
         // 재장전상태 true

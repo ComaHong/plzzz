@@ -11,46 +11,49 @@ public class ExitAirplane : MonoBehaviour
     public GameObject airplanecam; // 비행기에서 사용할 캠
     public GameObject maincam; // 비행기에서 나오면 사용할 캠
 
+
+
     public bool isPlayerInside = false; // 플레이어가 비행기 안에 있는지 여부
     private Vector3 playerStartPositionRelativeToAirplane; // 플레이어의 비행기 상대적인 시작 위치
 
 
-    //private void OnEnable()
-    //{
-    //    StartCoroutine(StartFlying());
-    //    maincam.SetActive(false);
-    //    airplanecam.SetActive(true);
+    private void OnEnable()
+    {
+        StartCoroutine(StartFlying());
+        maincam.SetActive(false);
+        airplanecam.SetActive(true);
 
-    //}
+    }
 
-    //private IEnumerator StartFlying()
-    //{
-    //    yield return new WaitForSeconds(startDelay);
+    private IEnumerator StartFlying()
+    {
+        yield return new WaitForSeconds(startDelay);
 
-    //    // 비행기가 출발하는 로직을 여기에 추가
-    //    Debug.Log("Airplane is now flying!");
+        // 비행기가 출발하는 로직을 여기에 추가
+        Debug.Log("Airplane is now flying!");
 
-    //    yield return null;
-    //}
+        yield return null;
+    }
     private void Start()
     {
         maincam.SetActive(false);
         airplanecam.SetActive(true);
         player.transform.SetParent(airplane.transform);
-      
+
     }
-   
+
 
     private void Update()
     {
-      
-            // 플레이어가 비행기 안에 있으면 F 키를 눌러서 비행기에서 나갈 수 있음
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                Debug.Log("test");
-                OutAirplane();
-            }
-       
+
+        // 플레이어가 비행기 안에 있으면 F 키를 눌러서 비행기에서 나갈 수 있음
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Debug.Log("test");
+            OutAirplane();
+
+        }
+
     }
 
     private void OutAirplane()
@@ -61,15 +64,15 @@ public class ExitAirplane : MonoBehaviour
         maincam.SetActive(true); // 주 카메라 활성화
         Debug.Log("카메라 활성화");
         airplanecam.SetActive(false); // 비행기 카메라 비활성화
-      player.transform.SetParent(null); // 부모 해제
+        player.transform.SetParent(null); // 부모 해제
         playerRigidbody.isKinematic = false; // 중력 적용
         playerRigidbody.AddForce(Vector3.down * exitForce, ForceMode.Impulse); // 떨어뜨리기
                                                                                // PlayerController 스크립트 활성화
-        //PlayerController playerController = player.GetComponent<PlayerController>();
-        //if (playerController != null)
-        //{
-        //    playerController.enabled = true;
-        //}
+        PlayerController playerController = player.GetComponent<PlayerController>();
+        if (playerController != null)
+        {
+            playerController.enabled = true;
+        }
 
     }
 }
