@@ -735,9 +735,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectCharacter: {fileID: 553994619}
   mainMenu: {fileID: 1460984426}
-  player1prefab: {fileID: 2847553621394608229, guid: 522f029247d7e2c4ea2771385def2933, type: 3}
-  player2prefab: {fileID: 4537237900762230340, guid: d79ea67e729bdf941a757312d034ba1b, type: 3}
-  player3prefab: {fileID: 7104217434009269793, guid: 68db2dc0ea961444cb5d7274f8e7c742, type: 3}
 --- !u!1 &561709918
 GameObject:
   m_ObjectHideFlags: 0
@@ -1207,51 +1204,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1427223241
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1427223243}
-  - component: {fileID: 1427223242}
-  m_Layer: 0
-  m_Name: test12
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1427223242
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1427223241}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2cce6d8c87d8c79438f6be93aabcc646, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  a: 0
---- !u!4 &1427223243
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1427223241}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 961.49023, y: 707.5162, z: -502.72925}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1460695573
 GameObject:
   m_ObjectHideFlags: 0
@@ -1448,6 +1400,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectCharacter: {fileID: 553994619}
   mainMenu: {fileID: 1460984426}
+  inventory: {fileID: 11400000, guid: 35cdb1a5a481dd34691d53485008aa33, type: 2}
 --- !u!1 &1610910741
 GameObject:
   m_ObjectHideFlags: 0
@@ -2627,4 +2580,3 @@ SceneRoots:
   - {fileID: 553994623}
   - {fileID: 977007951}
   - {fileID: 7146030388963599559}
-  - {fileID: 1427223243}

@@ -8,6 +8,7 @@ public class MainMenu : MonoBehaviour
     [Header("메인씬의 메뉴")]
     public GameObject selectCharacter;
     public GameObject mainMenu;
+    public InventoryObject inventory;
 
     // 캐릭터 선택 버튼을 클릭했을 때 호출되는 메서드
     public void OnSelectCharater()
@@ -28,5 +29,6 @@ public class MainMenu : MonoBehaviour
         // 게임을 종료합니다.
         Debug.Log("게임 끄는중. . . ");
         Application.Quit();
+        inventory.Container.Clear();    
     }
 }

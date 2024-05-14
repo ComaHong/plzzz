@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     public GameObject playerDamage; // 플레이어가 피격당함을 표시해줄 UI
     public HealthBar hpSlider; //hp슬라이더 가지고있는 스크립트
     public GameObject EndgameMenu; // 엔드게임 메뉴패널
-
+    public InventoryObject inventory;
 
     public Transform centerTr; // 플레이어의 center Transform
     public Transform player; // 플레이어의 Transform
@@ -186,7 +186,7 @@ public class PlayerController : MonoBehaviour
             // AKM이 비활성화되어 있을 때 RifleWalk 애니메이션은 비활성화합니다.
             if (!akmObject.activeSelf)
             {
-                Debug.Log("ak비활성화");
+          
                 //anim.SetBool("RifleWalk", false);
                 anim.SetBool("RIfleIdle", false);
                 anim.SetBool("RIfleRun", false);
@@ -364,48 +364,15 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         playerDamage.SetActive(false);
     }
-    //void test1()
-    //{
-    //    // 초기에는 1번 게임 오브젝트가 활성화되어 있을 때만 처리합니다.
-    //    if (obj1.activeSelf)
-    //    {
-    //        // 2번 애니메이터를 활성화하고, 3번 애니메이터를 비활성화합니다.
-    //        animator2.gameObject.SetActive(true);
-    //        animator2.Play("Flying");
-    //        anim.gameObject.SetActive(false);
-    //    }
-    //    else
-    //    {
-    //        // 1번 게임 오브젝트가 비활성화되어 있을 때는 2번 애니메이터를 비활성화하고, 3번 애니메이터를 활성화합니다.
-    //        animator2.gameObject.SetActive(false);
-    //        anim.gameObject.SetActive(true);
-
-    //    }
-    //}
-    //void test2()
-    //{
-    //    // 매 프레임마다 1번 게임 오브젝트의 활성화 여부를 확인하여 상태를 변경합니다.
-    //    if (obj1.activeSelf)
-    //    {
-    //        if (!animator2.gameObject.activeSelf)
-    //        {
-    //            // 1번 게임 오브젝트가 활성화되어 있고, 2번 애니메이터가 비활성화되어 있으면 활성화합니다.
-    //            animator2.gameObject.SetActive(true);
-    //            animator2.Play("Animation2");
-    //            anim.gameObject.SetActive(false);
-    //        }
-    //    }
-    //    else
-    //    {
-    //        if (!anim.gameObject.activeSelf)
-    //        {
-    //            // 1번 게임 오브젝트가 비활성화되어 있고, 3번 애니메이터가 비활성화되어 있으면 활성화합니다.
-    //            animator2.gameObject.SetActive(false);
-    //            anim.gameObject.SetActive(true);
-
-    //        }
-    //    }
-    //}
+    public void OnTriggerEnter(Collider other)
+    {
+        var item = other.GetComponent<Item>();
+        if(item)
+        {
+            inventory.AddItem(item.item, 1);
+            Destroy(other.gameObject);
+        }
+    }
 }
 
 

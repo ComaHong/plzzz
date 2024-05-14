@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     public GameObject pauseMenuUI;
     public GameObject EndGameMenuUI;
     public GameObject ObjectiveMenuUI;
+    public InventoryObject inventory;
 
     public static bool GameIsStopped = false;
 
@@ -75,6 +76,7 @@ public class UIManager : MonoBehaviour
     {
         // 메인 메뉴로 돌아가서 게임 재시작
         SceneManager.LoadScene("MainMenu");
+        inventory.Container.Clear();
 
     }
     // 메인 메뉴씬을 로드하는 메서드 버튼
@@ -88,6 +90,8 @@ public class UIManager : MonoBehaviour
     {
         Debug.Log("게임 끄는중. . . ");
         Application.Quit();
+        inventory.Container.Clear();
+
     }
     // 게임을 중지시키는 메서드 버튼
     void Pause()
