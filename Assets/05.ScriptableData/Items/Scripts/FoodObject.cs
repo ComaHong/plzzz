@@ -10,4 +10,5 @@ public class FoodObject : ItemObject
     {
         type = ItemType.Food;
     }
+
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AmmoBoost : MonoBehaviour
 {
-    // 가져와서 사용할 플레이어 컨트롤러 스크립트
+    // 가져와서 사용할 라이플  스크립트
     public Rifle rifle;
     // 아이템을 먹으면 재생될 오디오클립
     public AudioClip ammoBoostSound;

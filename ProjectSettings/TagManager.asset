@@ -9,6 +9,7 @@ TagManager:
   - InOut
   - Doar
   - Vehicle
+  - Item
   layers:
   - Default
   - TransparentFX

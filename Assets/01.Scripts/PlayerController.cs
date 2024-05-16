@@ -21,14 +21,17 @@ public class PlayerController : MonoBehaviour
     public GameObject playerDamage; // 플레이어가 피격당함을 표시해줄 UI
     public HealthBar hpSlider; //hp슬라이더 가지고있는 스크립트
     public GameObject EndgameMenu; // 엔드게임 메뉴패널
-    public InventoryObject inventory;
+    public InventoryObject inventory; // 
+    public GameObject ItemUI; // 아이템상호작용 UI 텍스트
+    public GameObject InventoryUi; // 인벤토리 UI패널
+    private bool isinventoryUiActive; // 인벤토리 UI패널이 켜져잇는지 확인할 bool변수
 
     public Transform centerTr; // 플레이어의 center Transform
     public Transform player; // 플레이어의 Transform
     public Animator anim; // 플레이어의 애니메이터
     public GameObject cam; // 3인칭시점카메라
     public GameObject akmObject; // 총 오브젝트
-    /* public Text cartext;*/ // 차량 상호작용할 메시지
+
     [Header("Test")]
     public GameObject obj1; // 1번 게임 오브젝트
     public Animator animator2; // 2번 애니메이터
@@ -67,6 +70,7 @@ public class PlayerController : MonoBehaviour
         MoveAndRotate();
         Run();
         Jump();
+        ToggleInventory();
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -186,7 +190,7 @@ public class PlayerController : MonoBehaviour
             // AKM이 비활성화되어 있을 때 RifleWalk 애니메이션은 비활성화합니다.
             if (!akmObject.activeSelf)
             {
-          
+
                 //anim.SetBool("RifleWalk", false);
                 anim.SetBool("RIfleIdle", false);
                 anim.SetBool("RIfleRun", false);
@@ -364,15 +368,45 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         playerDamage.SetActive(false);
     }
-    public void OnTriggerEnter(Collider other)
+    // 플레이어와 오브젝트와 닿아있을 떄 사용할 메서드
+    public void OnTriggerStay(Collider other)
     {
+        // 닿아있는 오브젝트의 item스크립트를 가져와서 item변수에 담음
         var item = other.GetComponent<Item>();
-        if(item)
+        // 만약 아이템 스크립트가 존재한다면 itemUI 키기
+        if (item)
         {
-            inventory.AddItem(item.item, 1);
-            Destroy(other.gameObject);
+            ItemUI.gameObject.SetActive(true);
+            
+            // F키를 눌러 나의 인벤토리 창에 아이템을 추가하고 오브젝트 즉시 파괴, ItemUI 끄기
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                inventory.AddItem(item.item, 1);
+                Destroy(other.gameObject);
+                ItemUI.gameObject.SetActive(false);
+
+            }
+
         }
     }
+    // 플레이어와 오브젝트가 떨어질 때 사용할 메서드
+    public void OnTriggerExit(Collider other)
+    {
+        // 아이템UI오브젝트 끄기
+        ItemUI.gameObject.SetActive(false);
+    }
+    void ToggleInventory()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            isinventoryUiActive = !isinventoryUiActive; // 상태를 반전시킴 (켜져 있으면 끄고, 꺼져 있으면 켬)
+
+            InventoryUi.SetActive(isinventoryUiActive); // 대상 오브젝트의 활성화 여부를 설정
+        }
+       
+        
+    }
+
 }
 
 

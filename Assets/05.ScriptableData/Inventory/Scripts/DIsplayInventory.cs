@@ -1,17 +1,20 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DIsplayInventory : MonoBehaviour
 {
     public InventoryObject inventory;
-    public int x_Start;
+    public int x_Start; 
     public int y_Start;
     public int x_Space_Between_Item;
     public int y_Space_Between_Item;
     public int Number_Of_Column;
+  
+    
     Dictionary<InventorySlot, GameObject> itemsDisplayed = new Dictionary<InventorySlot, GameObject>();
     // Start is called before the first frame update
     void Start()
@@ -23,6 +26,7 @@ public class DIsplayInventory : MonoBehaviour
     void Update()
     {
         UpdateDisplay();
+
     }
     public  void UpdateDisplay()
     {
@@ -60,6 +64,8 @@ public class DIsplayInventory : MonoBehaviour
         return new Vector3(x_Start + (x_Space_Between_Item * (i % Number_Of_Column)), y_Start + (-y_Space_Between_Item * (i / Number_Of_Column)), 0f);
     }
    
+   
+  
 }
 
 
