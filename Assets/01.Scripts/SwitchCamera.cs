@@ -30,8 +30,8 @@ public class SwitchCamera : MonoBehaviour
         {
             anim.SetBool("Idle", false);
             anim.SetBool("IdleAim", true);
-            //anim.SetBool("RifleWalk", true);
-            anim.SetBool("Walk", true);
+            anim.SetBool("RifleWalk", false);
+             anim.SetBool("Walk", true);
 
             ThirdPersonCam.SetActive(false);
             ThirdPersonCanvas.SetActive(false);

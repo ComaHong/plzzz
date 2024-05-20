@@ -23,8 +23,10 @@ public class PlayerController : MonoBehaviour
     public GameObject EndgameMenu; // 엔드게임 메뉴패널
     public InventoryObject inventory; // 
     public GameObject ItemUI; // 아이템상호작용 UI 텍스트
-    public GameObject InventoryUi; // 인벤토리 UI패널
+    public GameObject PlayerInventoryUi; // 플레이어의 인벤토리 UI패널
+    public GameObject inventoryUi; // 인벤토리 패널
     private bool isinventoryUiActive; // 인벤토리 UI패널이 켜져잇는지 확인할 bool변수
+    private bool isPlayerinventoryUiActive; // 플레이어 인벤토리 UI패널이 켜져잇는지 확인할 bool변수
 
     public Transform centerTr; // 플레이어의 center Transform
     public Transform player; // 플레이어의 Transform
@@ -377,7 +379,14 @@ public class PlayerController : MonoBehaviour
         if (item)
         {
             ItemUI.gameObject.SetActive(true);
-            
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                isinventoryUiActive = !isinventoryUiActive; // 상태를 반전시킴 (켜져 있으면 끄고, 꺼져 있으면 켬)
+
+                inventoryUi.SetActive(isinventoryUiActive); // 대상 오브젝트의 활성화 여부를 설정
+            }
+
+
             // F키를 눌러 나의 인벤토리 창에 아이템을 추가하고 오브젝트 즉시 파괴, ItemUI 끄기
             if (Input.GetKeyDown(KeyCode.F))
             {
@@ -399,9 +408,9 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            isinventoryUiActive = !isinventoryUiActive; // 상태를 반전시킴 (켜져 있으면 끄고, 꺼져 있으면 켬)
+            isPlayerinventoryUiActive = !isPlayerinventoryUiActive; // 상태를 반전시킴 (켜져 있으면 끄고, 꺼져 있으면 켬)
 
-            InventoryUi.SetActive(isinventoryUiActive); // 대상 오브젝트의 활성화 여부를 설정
+            PlayerInventoryUi.SetActive(isPlayerinventoryUiActive); // 대상 오브젝트의 활성화 여부를 설정
         }
        
         
