@@ -4,7 +4,7 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Item Database", menuName = "Inventory Syste/Items/Database")]
 
-public class ItemDatabaseObject : ScriptableObject
+public class ItemDatabaseObject : ScriptableObject, ISerializationCallbackReceiver
 {
     public ItemObject[] items;
     public Dictionary<ItemObject, int> GetID = new Dictionary<ItemObject, int>();
@@ -23,7 +23,6 @@ public class ItemDatabaseObject : ScriptableObject
 
     public void OnBeforeSerialize()
     {
-
+        throw new System.NotImplementedException();
     }
-    
 }

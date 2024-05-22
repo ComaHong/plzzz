@@ -46,7 +46,7 @@ public class ExitAirplane : MonoBehaviour
     private void Update()
     {
 
-        // 플레이어가 비행기 안에 있으면 F 키를 눌러서 비행기에서 나갈 수 있음
+        // 플레이어가 비행기 안에 있으면 Q 키를 눌러서 비행기에서 나갈 수 있음
         if (Input.GetKeyDown(KeyCode.Q))
         {
             Debug.Log("test");

@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody rb; // 플레이어의 리지드바디 컴포넌트
     public bool Crouch = false; //v 플레이어가 앉아있는지 확인할 bool타입 변수
-    public bool isGround = false; // 땅을 밟고 있는지 확인할 bool 변수
+    private bool isGround = false; // 땅을 밟고 있는지 확인할 bool 변수
     public bool isAKMActive;
 
     // 시작하면 사용될 메서드
@@ -60,6 +60,7 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked; // 마우스 커서 락걸기
         presentHealth = playerHealth; // 플레이어의 현재체력을 초기에 설정된값으로 할당
         hpSlider.GiveFullHealth(playerHealth); // 플레이어의 Silder Ui의 MaxValue와 Value에 플레이어의 체력을 할당
+       
 
 
 
@@ -74,6 +75,17 @@ public class PlayerController : MonoBehaviour
         Jump();
         ToggleInventory();
 
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            inventory.Save();
+            Debug.Log("인벤토리 저장");
+        }
+        if (Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            inventory.Load();
+            Debug.Log("인벤토리 저장값 불러오기 성공");
+        }
+
         if (Input.GetKeyDown(KeyCode.Q))
         {
             if (!fKeyPressed)
@@ -81,13 +93,25 @@ public class PlayerController : MonoBehaviour
 
                 anim.SetBool("Flying", true);
                 fKeyPressed = true;
+                
             }
             else
             {
                 // F 키를 연속으로 두 번 눌렀을 때 실행할 코드
                 obj1.SetActive(true);
                 animator2.SetBool("Open", true);
-                anim.SetBool("Holding", true);
+                h = Input.GetAxisRaw("Horizontal");
+                v = Input.GetAxisRaw("Vertical");
+
+                // 새로운 Vector3 방향값 
+                Vector3 direction = new Vector3(h, 0f, v).normalized;
+
+                // 입력된 방향에 따라 애니메이션을 변경합니다.
+                if (direction.magnitude > 0.1f)
+                {
+                    anim.SetBool("Holding", true);
+                }
+                    
             }
 
         }
@@ -123,8 +147,10 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGround = true;
+            rb.useGravity = true;
 
             anim.SetBool("Jumping", true);
+            anim.SetBool("isGround", true);
         }
 
     }
@@ -134,7 +160,9 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGround = true;
+            rb.useGravity = true;
             anim.SetBool("Jumping", true);
+            anim.SetBool("isGround", true);
         }
 
     }
@@ -144,6 +172,8 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGround = false;
+            anim.SetBool("isGround", false);
+            
         }
 
     }
