@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class ExitAirplane : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class ExitAirplane : MonoBehaviour
     public float startDelay = 5f; // 게임 시작 후 비행기가 출발하기까지의 지연 시간
     public GameObject airplanecam; // 비행기에서 사용할 캠
     public GameObject maincam; // 비행기에서 나오면 사용할 캠
+    private float mouseX; // 카메라가 입력받을 마우스 X축값
+    private float mouseY; // 카메라가 입력받을 마우스 Y축값
 
 
 
@@ -53,6 +56,9 @@ public class ExitAirplane : MonoBehaviour
             OutAirplane();
 
         }
+        // 마우스 입력 값을 가져옵니다.
+        mouseX = Input.GetAxis("Mouse X");
+        mouseY = Input.GetAxis("Mouse Y");
 
     }
 

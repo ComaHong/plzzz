@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
     public GameObject cam; // 3인칭시점카메라
     public GameObject akmObject; // 총 오브젝트
 
-
+    public GameObject playerbody; //플레이어 바디
 
     [Header("낙하산 부품들")]
     public float descentSpeed = 0.5f; // 낙하 속도
@@ -70,6 +70,9 @@ public class PlayerController : MonoBehaviour
     // 시작하면 사용될 메서드
     void Start()
     {
+
+        // 테스팅 끝나면 주석 해체해야함***playerbody.SetActive(false);    
+        cam.SetActive(false );
         rb = GetComponent<Rigidbody>(); // 시작하면 플레이어의 리지드바디 컴포넌트를 찾아서 할당
         Cursor.lockState = CursorLockMode.Locked; // 마우스 커서 락걸기
         presentHealth = playerHealth; // 플레이어의 현재체력을 초기에 설정된값으로 할당
@@ -129,21 +132,16 @@ public class PlayerController : MonoBehaviour
                     }
                     break;
                 case JumpState.ParachuteDeployed:
-                    
+                    //if (player.position.y <= 60.0f)
+                    //{
+                    //    PrepareLanding();
+                    //    anim.SetBool("Landing", true);
+                    //}
                     break;
             }
         }
         // 앉기 메서드
         IsCrouch();
-
-
-
-
-
-
-
-
-
 
 
     }
@@ -261,22 +259,7 @@ public class PlayerController : MonoBehaviour
         anim.SetFloat("MoveV", smoothedValueY);
         anim.SetFloat("MoveH", smoothedValueX);
 
-
-        //}
-        //if (gunToggleMode)
-        //{
-        //    if (Input.GetMouseButtonDown(1)) zoom = !zoom;
-        //    guncamera.depth = zoom ? 3 : -1;
-        //}
-        //else
-        //{
-        //    if (Input.GetMouseButton(1))
-        //    {
-        //        guncamera.depth = 4;
-
-        //    }
-        //    else guncamera.depth = -1;
-        //}
+              
     }
 
     // 플레이어의 이동 및 회전을 처리할 메서드
@@ -349,6 +332,7 @@ public class PlayerController : MonoBehaviour
 
 
         }
+        // 플레이어가 뒤로갈떄는 이동속도 감소
         if (v < 0) v *= 0.6F;
     }
     // 플레이어의 점프 동작을 처리할 메서드
@@ -466,67 +450,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //void bungeejumping()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.Q))
-    //    {
-    //        if (!qKeyPressed)
-    //        {
-    //            anim.SetBool("Flying", true);
-    //            anim.SetBool("Flying2", true);
-    //            qKeyPressed = true;
-
-    //        }
-    //        // 플레이어의 Y 좌표 확인
-    //        else if (player.transform.position.y <= 150.0f && !parachuteDeployed)
-    //        {
-    //            parachuteui.SetActive(true);
-    //            {
-
-    //                if (Input.GetKeyDown(KeyCode.Q))
-    //                {
-    //                    // F 키를 연속으로 두 번 눌렀을 때 실행할 코드
-    //                    parachuteui.SetActive(false);
-    //                    parachute.SetActive(true);
-    //                    paraanim.SetBool("Open", true);
-    //                    h = Input.GetAxisRaw("Horizontal");
-    //                    v = Input.GetAxisRaw("Vertical");
-    //                    anim.SetBool("Open", true);
-
-    //                    // 새로운 Vector3 방향값 
-    //                    Vector3 direction = new Vector3(h, 0f, v).normalized;
-
-    //                    // 입력된 방향에 따라 애니메이션을 변경합니다.
-    //                    if (direction.magnitude > 0.1f)
-    //                    {
-    //                        anim.SetBool("Holding", true);
-    //                        if (player.transform.position.y <= 30.0f)
-    //                        {
-    //                            parachuteisgroundui.SetActive(true);
-    //                            if (Input.GetKeyDown(KeyCode.Q))
-    //                            {
-    //                                parachuteisgroundui.SetActive(false);
-    //                                rb.useGravity = true;
-    //                                anim.SetBool("Falling", true);
-    //                                if (player.transform.position.y <= 5)
-    //                                {
-    //                                    anim.SetBool("Landing", true);
-    //                                    StartCoroutine(FallAndDestroy());
-    //                                }
-    //                            }
-
-    //                        }
-    //                    }
-
-    //                }
-    //            }
-
-
-    //        }
-
-
-    //    }
-    //}
+   
     void IsCrouch()
     {
         // C키를 눌렀고 플레이어가 앉아있지 않다면 실행할 코드
@@ -553,106 +477,28 @@ public class PlayerController : MonoBehaviour
             walkSpeed = 5f;
         }
     }
-    //IEnumerator FallAndDestroy()
-    //{
-    //    float elapsedTime = 0f;
+   
 
-    //    while (elapsedTime < destroyDelay)
-    //    {
-    //        // 시간 경과
-    //        elapsedTime += Time.deltaTime;
+    IEnumerator FallAndDestroy()
+    {
+        float descentSpeed = 2.0f;
+        float rotationSpeed = 45.0f;
+        float destroyDelay = 3.0f;
+        float elapsedTime = 0f;
 
-    //        // 낙하산 하강
-    //        parachute.transform.Translate(Vector3.down * descentSpeed * Time.deltaTime, Space.World);
-
-    //        // 낙하산 회전
-    //        parachute.transform.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
-
-    //        yield return null;
-    //    }
-
-    //    // 낙하산 삭제
-    //    Destroy(parachute.gameObject);
-    //}
-    //void BungeeJumping()
-    //{
-       
-    //    if (player.position.y <= 250.0f && !parachuteReady && !parachuteDeployed)
-    //    {
-    //        parachuteui.SetActive(true);
-    //        parachuteReady = true;
-    //    }
-    //    else if (player.position.y <= 60f)
-    //    {
-    //        parachuteisgroundui.SetActive(true);
-    //    }
-    //    if (Input.GetKeyDown(KeyCode.Q))
-    //    {
-    //        // 첫 번째 Q 입력: 비행 시작
-    //        if (!isFlying)
-    //        {
-    //            anim.SetBool("Flying", true);
-    //            anim.SetBool("Flying2", true);
-    //            isFlying = true;
-    //        }
-    //        // 두 번째 Q 입력: 낙하산 준비
-    //        else if (parachuteReady)
-    //        {
-    //            parachuteui.SetActive(false);
-    //            parachute.SetActive(true);
-    //            parachuteReady = true;
-    //            paraanim.SetBool("Open", true);
-    //            anim.SetBool("Open", true);
-    //            parachuteDeployed = true;
-    //            parachuteReady = false;
-    //            h = Input.GetAxisRaw("Horizontal");
-    //            v = Input.GetAxisRaw("Vertical");
-
-    //            Vector3 direction = new Vector3(h, 0f, v).normalized;
-
-    //            // 입력된 방향에 따라 애니메이션을 변경합니다.
-    //            if (direction.magnitude > 0.1f)
-    //            {
-    //                anim.SetBool("Holding", true);
-    //            }
-    //        }
-    //        // 세 번째 Q 입력: 낙하산 배치
-    //        else if (parachuteDeployed && player.position.y <= 60.0f)
-    //        {
-    //            //parachuteisgroundui.SetActive(true);
-    //            if (Input.GetKeyDown(KeyCode.Q))
-    //            {
-    //                parachuteisgroundui.SetActive(false);
-    //                rb.useGravity = true;
-    //                anim.SetBool("Falling", true);
-    //                if (player.position.y <= 10.0f)
-    //                {
-    //                    anim.SetBool("Landing", true);
-    //                    StartCoroutine(FallAndDestroy());
-    //                }
-    //            }
-    //        }
-    //    }
-
-        IEnumerator FallAndDestroy()
+        while (elapsedTime < destroyDelay)
         {
-            float descentSpeed = 2.0f;
-            float rotationSpeed = 90.0f;
-            float destroyDelay = 5.0f;
-            float elapsedTime = 0f;
-
-            while (elapsedTime < destroyDelay)
-            {
-                elapsedTime += Time.deltaTime;
-                parachute.transform.Translate(Vector3.down * descentSpeed * Time.deltaTime, Space.World);
-                parachute.transform.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
-                yield return null;
-            }
-
-            Destroy(parachute);
+            elapsedTime += Time.deltaTime;
+            parachute.transform.Translate(Vector3.down * descentSpeed * Time.deltaTime, Space.World);
+            parachute.transform.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
+            yield return null;
         }
+
+        Destroy(parachute);
+    }
     void StartFlying()
     {
+        playerbody.SetActive(true);
         anim.SetBool("Flying", true);
         anim.SetBool("Flying2", true);
         isFlying = true;
@@ -667,6 +513,7 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("Open", true);
         parachuteDeployed = true;
         parachuteReady = false;
+       
         h = Input.GetAxisRaw("Horizontal");
         v = Input.GetAxisRaw("Vertical");
 
@@ -674,6 +521,8 @@ public class PlayerController : MonoBehaviour
         if (direction.magnitude > 0.1f)
         {
             anim.SetBool("Holding", true);
+            //anim.SetBool("Flying", false);
+            //anim.SetBool("Flying2", false);
         }
         currentState = JumpState.ParachuteReady;
     }
@@ -681,15 +530,24 @@ public class PlayerController : MonoBehaviour
     void PrepareLanding()
     {
         parachuteisgroundui.SetActive(false);
+        Debug.Log("낙하산 그라운드 유아이 꺼짐");
         rb.useGravity = true;
+        Debug.Log("플레이어 중력 켜짐");
         anim.SetBool("Falling", true);
+        Debug.Log("Falling 애니메이션 출력");
 
-        if (player.position.y <= 10.0f)
+        if (player.position.y <= 10.0f )
         {
+            Debug.Log("플레이어 상공 10미터");
             anim.SetBool("Landing", true);
+            Debug.Log("Landing애니메이션 출력");
             StartCoroutine(FallAndDestroy());
+                        Debug.Log("낙하산 제거 코루틴 실행");
+            
         }
         currentState = JumpState.Landing;
+
+
     }
 }
 

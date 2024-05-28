@@ -9,7 +9,8 @@ public class FollowHead : MonoBehaviour
     public float weight = 1f; // 머리를 따라가는 정도를 결정하는 가중치 값
 
     // 낙하산
-    public Transform ParachuteRigPos;
+    public Transform ParachuteLeftRigPos;
+    public Transform ParachuteRightRigPos;
     public Transform righthandle; // 오브젝트의 손잡이(Transform)
     public Transform leftHandle; // 왼손의 손잡이(Transform)
 
@@ -26,8 +27,8 @@ public class FollowHead : MonoBehaviour
     private void OnAnimatorIK(int layerIndex)
     {
 
-        ParachuteRigPos.position = playerAnimator.GetIKHintPosition(AvatarIKHint.LeftElbow);
-        ParachuteRigPos.position = playerAnimator.GetIKHintPosition(AvatarIKHint.RightElbow);
+        ParachuteLeftRigPos.position = playerAnimator.GetIKHintPosition(AvatarIKHint.LeftElbow);
+        ParachuteRightRigPos.position = playerAnimator.GetIKHintPosition(AvatarIKHint.RightElbow);
         playerAnimator.SetIKPositionWeight(AvatarIKGoal.LeftHand, a);
         playerAnimator.SetIKRotationWeight(AvatarIKGoal.LeftHand, a);
 
