@@ -66,13 +66,16 @@ public class PlayerController : MonoBehaviour
     private bool isGround = false; // 땅을 밟고 있는지 확인할 bool 변수
     public bool isAKMActive;
 
-
+    private void Awake()
+    {
+        cam.SetActive(false);
+    }
     // 시작하면 사용될 메서드
     void Start()
     {
 
         // 테스팅 끝나면 주석 해체해야함***playerbody.SetActive(false);    
-        cam.SetActive(false );
+       
         rb = GetComponent<Rigidbody>(); // 시작하면 플레이어의 리지드바디 컴포넌트를 찾아서 할당
         Cursor.lockState = CursorLockMode.Locked; // 마우스 커서 락걸기
         presentHealth = playerHealth; // 플레이어의 현재체력을 초기에 설정된값으로 할당
