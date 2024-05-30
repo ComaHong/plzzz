@@ -2230,9 +2230,6 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: Flying
     m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: isGround
-    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 3814394242564659685}
   m_Solo: 0

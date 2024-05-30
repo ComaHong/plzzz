@@ -28,6 +28,7 @@ public class VehicleController : MonoBehaviour
 
     [Header("차량 상호작용")]
     public PlayerController playerController;
+    public GameObject cartext; // 상호작용 텍스트
     private float radius = 5f;
     private bool isOpened = false;
 
@@ -60,19 +61,26 @@ public class VehicleController : MonoBehaviour
 
         if (Vector3.Distance(transform.position, playerController.transform.position) < radius)
         {
+            cartext.SetActive(true);
             if (Input.GetKeyDown(KeyCode.F))
             {
-                isOpened = true;
-                radius = 5000f;
-                Debug.Log("차량 탑승");
-                ObjectivesComplete.occurrence.GetobjectivesDone(true, true, true, false);
-            }
-            else if (Input.GetKeyDown(KeyCode.G))
-            {
-                playerController.transform.position = vehicleDoor.transform.position;
-                isOpened = false;
-                radius = 5f;
-                Debug.Log("플레이어 차량에서 내림");
+                // 차량에 탑승하지 않은 상태에서 F키를 누르면 차량에 탑승
+                if (!isOpened)
+                {
+                    isOpened = true;
+                    radius = 5000f;
+                    Debug.Log("차량 탑승");
+                    cartext.SetActive(false);
+                    ObjectivesComplete.occurrence.GetobjectivesDone(true, true, true, false);
+                }
+                // 차량에 탑승한 상태에서 F키를 누르면 차량에서 내림
+                else
+                {
+                    playerController.transform.position = vehicleDoor.transform.position;
+                    isOpened = false;
+                    radius = 5f;
+                    Debug.Log("플레이어 차량에서 내림");
+                }
             }
         }
 
