@@ -7,6 +7,7 @@ public class ExitAirplane : MonoBehaviour
 {
     public GameObject player; // 플레이어 오브젝트
     public GameObject airplane; // 비행기 오브젝트
+    public GameObject playerbody; // 플레이어 바디오브젝트
     public float exitForce = 10f; // 비행기에서 나올 때 적용할 힘
     public float startDelay = 5f; // 게임 시작 후 비행기가 출발하기까지의 지연 시간
     public GameObject airplanecam; // 비행기에서 사용할 캠
@@ -23,6 +24,7 @@ public class ExitAirplane : MonoBehaviour
     private void OnEnable()
     {
         StartCoroutine(StartFlying());
+        playerbody.SetActive(false);
         maincam.SetActive(false);
         airplanecam.SetActive(true);
 
@@ -53,6 +55,7 @@ public class ExitAirplane : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             Debug.Log("test");
+            playerbody.SetActive(true);
             OutAirplane();
 
         }

@@ -7,6 +7,7 @@ public class Helicopter : MonoBehaviour
     public GameObject helicopter; // 헬리콥터 오브젝트
     public PlayerController playerController; // 플레이어 컨트롤러 스크립트
     public Animation helicopterAnimation; // 헬리콥터 애니메이터
+    public GameObject helicoptercam;
     public float forwardSpeed = 100f; // 헬리콥터의 Z축 이동 속도
     public float descendSpeed = 10f; // 헬리콥터의 Y축 하강 속도
     public float animationStopSpeed = 0.5f; // 애니메이터 속도를 줄이는 속도
@@ -69,6 +70,10 @@ public class Helicopter : MonoBehaviour
             foreach (AnimationState state in helicopterAnimation)
             {
                 state.speed = Mathf.Lerp(state.speed, 0, animationStopSpeed * Time.deltaTime);
+                if(state.speed == 0)
+                {
+                    helicoptercam.SetActive(true);
+                }
             }
 
         }

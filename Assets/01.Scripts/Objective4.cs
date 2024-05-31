@@ -11,6 +11,7 @@ public class Objective4 : MonoBehaviour
     private void Update()
     {
         helicopterController.StartHelicopter();
+        helicopterController.ActivateHelicopter();
     }
 
     // 차량과 닿았을때 사용할 메서드

@@ -54,7 +54,7 @@ public class Rifle : MonoBehaviour
     {
         Debug.Log("총획득");
         // 총의 위치값을 손 오브젝트의 부모로 등록
-        transform.SetParent(hand);
+        //transform.SetParent(hand);
         playerController.isAKMActive = playerController.akmObject.activeSelf;
         anim.SetBool("RifleIdle", true);
         // 현재 총알을 최대 총알로 변경

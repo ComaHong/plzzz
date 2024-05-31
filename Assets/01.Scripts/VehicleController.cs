@@ -58,39 +58,56 @@ public class VehicleController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        // 플레이어의 위치값과 차량의 위치값 사이값이 radius 값보다 작을경우 실행되는 로직
         if (Vector3.Distance(transform.position, playerController.transform.position) < radius)
         {
+            // 차량상호작용텍스트켜짐
             cartext.SetActive(true);
+            // 차량에 탑승하지 않은 상태에서 F키를 누르면 차량에 탑승
             if (Input.GetKeyDown(KeyCode.F))
             {
-                // 차량에 탑승하지 않은 상태에서 F키를 누르면 차량에 탑승
+                // 차량의 문이 닫혓을떄 실행되는 로직
                 if (!isOpened)
                 {
+                    // 열림 true
                     isOpened = true;
+                    // radius 값 을 언제든지 내릴수 있도록 5000으로변경
                     radius = 5000f;
                     Debug.Log("차량 탑승");
+                    // 차량 상호작용텍스트 끔
                     cartext.SetActive(false);
+                    // ObjectivesComplete 스크립트의  GetobjectivesDone메서드의 매개변수값 변경
                     ObjectivesComplete.occurrence.GetobjectivesDone(true, true, true, false);
                 }
                 // 차량에 탑승한 상태에서 F키를 누르면 차량에서 내림
+
+                // 나머지 경우에 실행될 로직
                 else
                 {
+                    // 플레이어의 위치값을 차량 운전석 위치로 변경
                     playerController.transform.position = vehicleDoor.transform.position;
+                    // 문닫힘
                     isOpened = false;
+                    // radius값 5로변경
                     radius = 5f;
                     Debug.Log("플레이어 차량에서 내림");
                 }
             }
         }
-
+        // 차량문이 열려있으면
         if (isOpened == true)
         {
+            // 3인칭cam끄기
             ThirdPersonCam.SetActive(false);
+            // 3인칭canvas 끄기
             ThirdPersonCanvas.SetActive(false);
+            // 에임캠 끄기
             AimCam.SetActive(false);
+            // 에임캔버스끄기
             Aimcanvas.SetActive(false);
+            // 플레이어 오브젝트 끄기
             PlayerCharacter.SetActive(false);
+            // 차량캠 켜짐
             iscarcam.SetActive(true);
 
             MoveVehicle();
@@ -98,12 +115,18 @@ public class VehicleController : MonoBehaviour
             ApplyBreaks();
             HitZombies();
         }
+        // 문이 닫혀있을경우
         else if (isOpened == false)
         {
+            // 3인칭카메라 키기
             ThirdPersonCam.SetActive(true);
+            // 3인칭캔버스 키기
             ThirdPersonCanvas.SetActive(true);
+            // 에임캠 사용
             AimCam.SetActive(true);
+            // 에임캔버스 사용
             Aimcanvas.SetActive(true);
+            // 플레이어 오브젝트 키기
             PlayerCharacter.SetActive(true);
         }
 
@@ -146,7 +169,7 @@ public class VehicleController : MonoBehaviour
     // 차량 브레이크 
     private void ApplyBreaks()
     {
-
+        // 스페이스바로 차량브레이크 실행
         if (Input.GetKey(KeyCode.Space))
         {
             presentBreakForce = breakingForce;
@@ -161,6 +184,7 @@ public class VehicleController : MonoBehaviour
         backRightWheelCollider.brakeTorque = presentBreakForce;
 
     }
+    // 차량으로 좀비를 공격하는 메서드
     void HitZombies()
     {
         RaycastHit hitinfo;

@@ -95,19 +95,19 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-        if (player.position.y <= 200f && !paraUIACtive)
-        {
-            parachuteReady = true;
-            parachuteui.gameObject.SetActive(true);
-            paraUIACtive = true;
-           
-                    }
-        if (player.position.y <= 60f && !paraUIunactive)
-        {
-            parachuteisgroundui.SetActive(true);
-            paraUIunactive = true;
-        }
-            
+        //if (player.position.y <= 200f && !paraUIACtive)
+        //{
+        //    parachuteReady = true;
+        //    parachuteui.gameObject.SetActive(true);
+        //    paraUIACtive = true;
+
+        //}
+        //if (player.position.y <= 60f && !paraUIunactive)
+        //{
+        //    parachuteisgroundui.SetActive(true);
+        //    paraUIunactive = true;
+        //}
+
 
 
         // 플레이어의 인풋담당 메서드
@@ -125,30 +125,30 @@ public class PlayerController : MonoBehaviour
         // 인벤토리 저장 및 불러오는 메서드
         InventorySaveandLoad();
         // 낙하산 관련 메서드
-        //if (player.position.y <= 250.0f && !parachuteReady && !parachuteDeployed )
-        //{
-        //    parachuteui.SetActive(true);
-        //    parachuteReady = true;
-        //}
-        //else if (player.position.y <= 60f )
-        //{
-        //    parachuteisgroundui.SetActive(true);
-        //}
+        if (player.position.y <= 250.0f && !parachuteReady && !parachuteDeployed)
+        {
+            parachuteui.SetActive(true);
+            parachuteReady = true;
+        }
+        else if (player.position.y <= 60f)
+        {
+            parachuteisgroundui.SetActive(true);
+        }
 
-        if (Input.GetKeyDown(KeyCode.Q)&& !lastQkey)
+        if (Input.GetKeyDown(KeyCode.Q) && !lastQkey)
         {
             switch (currentState)
             {
                 case JumpState.Initial:
                     StartFlying();
-                   
+
                     break;
                 case JumpState.Flying:
                     if (parachuteReady)
                     {
-                                            
-                            DeployParachute();
-                                            
+
+                        DeployParachute();
+
                     }
                     break;
                 case JumpState.ParachuteDeployed:
@@ -498,7 +498,7 @@ public class PlayerController : MonoBehaviour
             walkSpeed = 5f;
         }
     }
-   
+
 
     IEnumerator FallAndDestroy()
     {
@@ -519,7 +519,7 @@ public class PlayerController : MonoBehaviour
     }
     void StartFlying()
     {
-                      
+
         playerbody.SetActive(true);
         anim.SetBool("Flying", true);
         anim.SetBool("Flying2", true);
@@ -527,7 +527,7 @@ public class PlayerController : MonoBehaviour
         isFlying = true;
         currentState = JumpState.Flying;
 
-            }
+    }
 
     void DeployParachute()
     {
@@ -538,7 +538,7 @@ public class PlayerController : MonoBehaviour
         parachuteDeployed = true;
         parachuteReady = false;
         Debug.Log("DeployParachu");
-       
+
         h = Input.GetAxisRaw("Horizontal");
         v = Input.GetAxisRaw("Vertical");
 
@@ -546,7 +546,7 @@ public class PlayerController : MonoBehaviour
         if (direction.magnitude > 0.1f)
         {
             anim.SetBool("Holding", true);
-          
+
         }
         currentState = JumpState.ParachuteDeployed;
     }
@@ -559,21 +559,22 @@ public class PlayerController : MonoBehaviour
         Debug.Log("플레이어 중력 켜짐");
         anim.SetBool("Falling", true);
         Debug.Log("Falling 애니메이션 출력");
-        
-        if (player.position.y <= 30f )
+
+        if (player.position.y <= 30f)
         {
-          
+
             Debug.Log("플레이어 상공 10미터");
             anim.SetBool("Landing", true);
-            
+
             Debug.Log("Landing애니메이션 출력");
             StartCoroutine(FallAndDestroy());
-                        Debug.Log("낙하산 제거 코루틴 실행");
+            Debug.Log("낙하산 제거 코루틴 실행");
             lastQkey = true;
+            anim.SetBool("Flying", false);
 
             currentState = JumpState.Landing;
         }
-        
+
 
 
     }
