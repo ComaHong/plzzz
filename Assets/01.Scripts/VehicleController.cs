@@ -78,6 +78,7 @@ public class VehicleController : MonoBehaviour
                     cartext.SetActive(false);
                     // ObjectivesComplete 스크립트의  GetobjectivesDone메서드의 매개변수값 변경
                     ObjectivesComplete.occurrence.GetobjectivesDone(true, true, true, false);
+
                 }
                 // 차량에 탑승한 상태에서 F키를 누르면 차량에서 내림
 
@@ -118,6 +119,7 @@ public class VehicleController : MonoBehaviour
         // 문이 닫혀있을경우
         else if (isOpened == false)
         {
+            Debug.Log("Isopen false");
             // 3인칭카메라 키기
             ThirdPersonCam.SetActive(true);
             // 3인칭캔버스 키기

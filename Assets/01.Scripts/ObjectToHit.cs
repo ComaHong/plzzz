@@ -26,4 +26,13 @@ public class ObjectToHit : MonoBehaviour
         // 오브젝트를 파괴합니다.
         Destroy(gameObject);
     }
+    private void OnDestroy()
+    {
+        // 오브젝트가 파괴될 때 콜라이더 제거
+        Collider collider = GetComponent<Collider>();
+        if (collider != null)
+        {
+            Destroy(collider);
+        }
+    }
 }

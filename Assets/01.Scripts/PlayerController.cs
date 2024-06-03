@@ -21,7 +21,8 @@ public class PlayerController : MonoBehaviour
     public GameObject playerDamage; // 플레이어가 피격당함을 표시해줄 UI
     public HealthBar hpSlider; //hp슬라이더 가지고있는 스크립트
 
-    public GameObject EndgameMenu; // 엔드게임 메뉴패널
+    public GameObject minimapiconmesh; // 미니맵 아이콘 메쉬렌더러 컴포넌트
+        public GameObject EndgameMenu; // 엔드게임 메뉴패널
     public InventoryObject inventory; // 
     public GameObject ItemUI; // 아이템상호작용 UI 텍스트
     public GameObject PlayerInventoryUi; // 플레이어의 인벤토리 UI패널
@@ -46,10 +47,10 @@ public class PlayerController : MonoBehaviour
     public GameObject parachute; // 낙하산 오브젝트
     public Animator paraanim; // 낙하산오브젝트의 애니메이터
     private bool qKeyPressed = false; // 낙하와 낙하산을 핌을 관리할 bool변수
-    private bool parachuteDeployed = false;
-       private bool isFlying = false;
-    private bool parachuteReady = false;
-    private bool lastQkey = false;
+    private bool parachuteDeployed = false; // 낙하산이 펴졌는지를 체크할 bool변수
+       private bool isFlying = false; // 플레이어가 날고있음을 체크할 bool변수
+    private bool parachuteReady = false; // 낙하산이 준비되었는지 판별한 bool변수
+    private bool lastQkey = false; // 마지막 Q눌림을 체크할 bool 변수
     private enum JumpState { Initial, Flying, ParachuteReady, ParachuteDeployed, Landing }
     private JumpState currentState = JumpState.Initial;
 
@@ -72,6 +73,11 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         cam.SetActive(false);
+        if(minimapiconmesh != null)
+        {
+            // 시작할 때 Mesh Renderer를 비활성화합니다.
+            minimapiconmesh.GetComponent<MeshRenderer>().enabled = false;
+        }
     }
     // 시작하면 사용될 메서드
     void Start()
@@ -125,15 +131,15 @@ public class PlayerController : MonoBehaviour
         // 인벤토리 저장 및 불러오는 메서드
         InventorySaveandLoad();
         // 낙하산 관련 메서드
-        if (player.position.y <= 250.0f && !parachuteReady && !parachuteDeployed)
-        {
-            parachuteui.SetActive(true);
-            parachuteReady = true;
-        }
-        else if (player.position.y <= 60f)
-        {
-            parachuteisgroundui.SetActive(true);
-        }
+        //if (player.position.y <= 250.0f && !parachuteReady && !parachuteDeployed)  ****************
+        //{
+        //    parachuteui.SetActive(true);
+        //    parachuteReady = true;
+        //}
+        //else if (player.position.y <= 60f)
+        //{
+        //    parachuteisgroundui.SetActive(true);
+        //}
 
         if (Input.GetKeyDown(KeyCode.Q) && !lastQkey)
         {
@@ -175,7 +181,7 @@ public class PlayerController : MonoBehaviour
             rb.useGravity = true;
 
 
-            anim.SetBool("Jumping", true);
+            //anim.SetBool("Jumping", true);
             anim.SetBool("isGround", true);
         }
 
@@ -187,7 +193,7 @@ public class PlayerController : MonoBehaviour
         {
             isGround = true;
             rb.useGravity = true;
-            anim.SetBool("Jumping", true);
+            //anim.SetBool("Jumping", true);
             anim.SetBool("isGround", true);
         }
 
@@ -523,9 +529,12 @@ public class PlayerController : MonoBehaviour
         playerbody.SetActive(true);
         anim.SetBool("Flying", true);
         anim.SetBool("Flying2", true);
+        MeshRenderer meshRenderer = minimapiconmesh.GetComponent<MeshRenderer>();
+        meshRenderer.enabled = !meshRenderer.enabled;
         Debug.Log("Flying");
         isFlying = true;
         currentState = JumpState.Flying;
+
 
     }
 

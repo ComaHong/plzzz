@@ -10,8 +10,8 @@ public class Objective4 : MonoBehaviour
     
     private void Update()
     {
+
         helicopterController.StartHelicopter();
-        helicopterController.ActivateHelicopter();
     }
 
     // 차량과 닿았을때 사용할 메서드
@@ -21,6 +21,7 @@ public class Objective4 : MonoBehaviour
         {
             // 미션 완료
             ObjectivesComplete.occurrence.GetobjectivesDone(true, true, true, true);
+            
             helicopterController.ActivateHelicopter();
 
             // MainMenu씬을 로드합니다
