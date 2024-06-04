@@ -67,7 +67,7 @@ public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver
 
     public void OnBeforeSerialize()
     {
-        throw new System.NotImplementedException();
+        
     }
 }
 [System.Serializable]

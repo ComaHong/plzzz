@@ -31,7 +31,7 @@ public class Helicopter : MonoBehaviour
     private Vector3 initialPosition = new Vector3(386.799988f, 161.699997f, -114f); // 헬리콥터의 초기 위치
     private Vector3 forwardTargetPosition = new Vector3(336.529999f, 161.699997f, 621f); // Z축 목표 위치
     private Vector3 finalTargetPosition = new Vector3(336.529999f, 17.7000008f, 621f); // 최종 목표 위치
-    private Vector3 leaveingPosition = new Vector3(386.799988f, 161.699997f, 941.599976f); // 비행기가 최종적으로 날아갈 위치
+    private Vector3 leaveingPosition = new Vector3(386.799988f, 161.699997f, 2000.599976f); // 비행기가 최종적으로 날아갈 위치
 
     private bool isMovingForward = false; // Z축 방향 이동 중인지 여부
     private bool isDescending = false; // Y축 방향 하강 중인지 여부
@@ -108,18 +108,18 @@ public class Helicopter : MonoBehaviour
 
         }
         // 문이 닫혀있을경우
-        else if (isOpened == false)
+        //else if (isOpened == false)
         {
             // 3인칭카메라 키기
-            ThirdPersonCam.SetActive(true);
+            //ThirdPersonCam.SetActive(true);
             // 3인칭캔버스 키기
-            ThirdPersonCanvas.SetActive(true);
+            //ThirdPersonCanvas.SetActive(true);
             // 에임캠 사용
-            AimCam.SetActive(true);
+            //AimCam.SetActive(true);
             // 에임캔버스 사용
-            Aimcanvas.SetActive(true);
+            //Aimcanvas.SetActive(true);
             // 플레이어 오브젝트 키기
-            playerCharacter.SetActive(true);
+            //playerCharacter.SetActive(true);
         }
     }
 
@@ -130,6 +130,7 @@ public class Helicopter : MonoBehaviour
     {
         helicopter.SetActive(true); // 헬리콥터 활성화
         isMovingForward = true; // 헬리콥터 Z축 이동 시작
+        StartHelicopter();
     }
     public void StartHelicopter()
     {

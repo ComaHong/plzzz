@@ -12,6 +12,8 @@ public class ObjectivesComplete : MonoBehaviour
     public Text objective3;
     public Text objective4;
 
+    
+
     // 이 스크립트의 인스턴스를 전역적으로 접근할 수 있도록 정적 변수로 설정
     public static ObjectivesComplete occurrence;
 
@@ -68,6 +70,8 @@ public class ObjectivesComplete : MonoBehaviour
         {
             objective4.text = "4. Mission Completed";
             objective4.color = Color.green;
+            
+          
         }
         else
         {

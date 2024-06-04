@@ -65,7 +65,7 @@ public class SelectCharacter : MonoBehaviour
     public void OnCharacter2()
     {
         //testMod.a = 1;
-        SceneManager.LoadScene("ZombieLand1");
+        SceneManager.LoadScene("ZombieLand 2");
         // 두 번째 버튼 클릭 시 두 번째 프리팹 인스턴스화
         //Instantiate(player2prefab, new Vector3(501, 20, 379), Quaternion.identity);
     }

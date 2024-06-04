@@ -5,7 +5,7 @@ using UnityEngine;
 public class ZombieSpawn : MonoBehaviour
 {
     [Header("좀비 생성 바")]
-    public GameObject zombiePrefab; // 좀비 프리팹
+    public GameObject[] zombiePrefab; // 좀비 프리팹
     public Transform zombieSpawnPosition; // 좀비의 스폰 위치
     public GameObject dangerZone1; //좀비의 스폰 위치(dangerZone)
     private float repeatCycle = 1f; // 스폰시간단위
@@ -38,7 +38,8 @@ public class ZombieSpawn : MonoBehaviour
     }
     void EnemySpawner()
     {
-        Instantiate(zombiePrefab, zombieSpawnPosition.position, zombieSpawnPosition.rotation);
+        int randomIndex = Random.Range(0, zombiePrefab.Length);
+        Instantiate(zombiePrefab[randomIndex], zombieSpawnPosition.position, zombieSpawnPosition.rotation);
     }
     IEnumerator dangerZoneTimer()
     {

@@ -9,13 +9,14 @@ public class FollowHead : MonoBehaviour
     public float weight = 1f; // 머리를 따라가는 정도를 결정하는 가중치 값
 
     // 낙하산
-    public Transform ParachuteLeftRigPos;
-    public Transform ParachuteRightRigPos;
+    //public Transform ParachuteLeftRigPos;
+    //public Transform ParachuteRightRigPos;
     public Transform righthandle; // 오브젝트의 손잡이(Transform)
     public Transform leftHandle; // 왼손의 손잡이(Transform)
 
     [Range(0,1)]
-    public float a;
+    public float leftHandWeight;
+    public float rightHandWeight;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,10 +28,12 @@ public class FollowHead : MonoBehaviour
     private void OnAnimatorIK(int layerIndex)
     {
 
-        ParachuteLeftRigPos.position = playerAnimator.GetIKHintPosition(AvatarIKHint.LeftElbow);
-        ParachuteRightRigPos.position = playerAnimator.GetIKHintPosition(AvatarIKHint.RightElbow);
-        playerAnimator.SetIKPositionWeight(AvatarIKGoal.LeftHand, a);
-        playerAnimator.SetIKRotationWeight(AvatarIKGoal.LeftHand, a);
+        //ParachuteLeftRigPos.position = playerAnimator.GetIKHintPosition(AvatarIKHint.LeftElbow);
+        //ParachuteRightRigPos.position = playerAnimator.GetIKHintPosition(AvatarIKHint.RightElbow);
+        playerAnimator.SetIKPositionWeight(AvatarIKGoal.LeftHand, leftHandWeight);
+        playerAnimator.SetIKRotationWeight(AvatarIKGoal.LeftHand, leftHandWeight);
+        playerAnimator.SetIKPositionWeight(AvatarIKGoal.RightHand, rightHandWeight);
+        playerAnimator.SetIKRotationWeight(AvatarIKGoal.RightHand, rightHandWeight);
 
         //애니메이터의 머리를 target의 위치로 바라보도록 설정
         playerAnimator.SetLookAtPosition(target.position);
@@ -38,13 +41,17 @@ public class FollowHead : MonoBehaviour
         playerAnimator.SetLookAtWeight(weight);
 
         // Animator 컴포넌트가 존재하고 왼손과 오른손의 손잡이(Transform)가 존재할 때
-        if (playerAnimator != null && leftHandle != null && righthandle != null)
+        if (playerAnimator != null && leftHandle != null)
         {
             // IK를 사용하여 플레이어의 왼손 위치를 설정합니다.
             playerAnimator.SetIKPosition(AvatarIKGoal.LeftHand, leftHandle.position);
             // IK를 사용하여 플레이어의 왼손 회전을 설정합니다.
             playerAnimator.SetIKRotation(AvatarIKGoal.LeftHand, leftHandle.rotation);
 
+           
+        }
+        if (playerAnimator != null && righthandle != null)
+        {
             // IK를 사용하여 플레이어의 오른손 위치를 설정합니다.
             playerAnimator.SetIKPosition(AvatarIKGoal.RightHand, righthandle.position);
             // IK를 사용하여 플레이어의 오른손 회전을 설정합니다.

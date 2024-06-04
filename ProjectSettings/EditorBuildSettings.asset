@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/00.Scenes/ZombieLand.unity
     guid: 129b45da6c6506043a6bb6a115121614
   - enabled: 1
-    path: Assets/00.Scenes/ZombieLand1.unity
-    guid: be128f5d1d3f5d54eb1221a45690d94e
+    path: Assets/00.Scenes/ZombieLand 2.unity
+    guid: a2f1ae1f737aec84d8acf515b4d921c9
   m_configObjects: {}

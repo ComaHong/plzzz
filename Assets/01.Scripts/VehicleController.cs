@@ -110,6 +110,7 @@ public class VehicleController : MonoBehaviour
             PlayerCharacter.SetActive(false);
             // 차량캠 켜짐
             iscarcam.SetActive(true);
+            isOpened = true;
 
             MoveVehicle();
             VehicleSteering();
@@ -119,6 +120,7 @@ public class VehicleController : MonoBehaviour
         // 문이 닫혀있을경우
         else if (isOpened == false)
         {
+             
             Debug.Log("Isopen false");
             // 3인칭카메라 키기
             ThirdPersonCam.SetActive(true);
@@ -128,8 +130,10 @@ public class VehicleController : MonoBehaviour
             AimCam.SetActive(true);
             // 에임캔버스 사용
             Aimcanvas.SetActive(true);
+            isOpened = false;
             // 플레이어 오브젝트 키기
             PlayerCharacter.SetActive(true);
+            
         }
 
     }

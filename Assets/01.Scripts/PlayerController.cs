@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour
     public bool isAKMActive;
     private bool paraUIACtive = false;
     private bool paraUIunactive = false;
-
+    
     private void Awake()
     {
         cam.SetActive(false);
@@ -92,6 +92,7 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("Walk", false);
         anim.SetBool("Run", false);
 
+       
 
 
 
@@ -131,15 +132,15 @@ public class PlayerController : MonoBehaviour
         // 인벤토리 저장 및 불러오는 메서드
         InventorySaveandLoad();
         // 낙하산 관련 메서드
-        //if (player.position.y <= 250.0f && !parachuteReady && !parachuteDeployed)  ****************
-        //{
-        //    parachuteui.SetActive(true);
-        //    parachuteReady = true;
-        //}
-        //else if (player.position.y <= 60f)
-        //{
-        //    parachuteisgroundui.SetActive(true);
-        //}
+        if (player.position.y <= 250.0f && !parachuteReady && !parachuteDeployed) 
+        {
+            parachuteui.SetActive(true);
+            parachuteReady = true;
+        }
+        else if (player.position.y <= 60f && !lastQkey)
+        {
+            parachuteisgroundui.SetActive(true);
+        }
 
         if (Input.GetKeyDown(KeyCode.Q) && !lastQkey)
         {
@@ -239,7 +240,7 @@ public class PlayerController : MonoBehaviour
             {
                 // AKM이 비활성화되어 있을 때 RifleWalk 애니메이션은 비활성화하고 Walk 애니메이션을 활성화합니다.
                 //anim.SetBool("RifleWalk", false);
-                anim.SetBool("RifleIdle", false);
+                //anim.SetBool("RifleIdle", false);
                 anim.SetBool("RifleRun", false);
                 anim.SetBool("Walk", true);
             }
@@ -256,8 +257,8 @@ public class PlayerController : MonoBehaviour
             {
 
                 //anim.SetBool("RifleWalk", false);
-                anim.SetBool("RIfleIdle", false);
-                anim.SetBool("RIfleRun", false);
+                //anim.SetBool("RifleIdle", false);
+                anim.SetBool("RifleRun", false);
                 anim.SetBool("Idle", true);
             }
             else
@@ -267,11 +268,11 @@ public class PlayerController : MonoBehaviour
         }
         if (akmObject.activeSelf)
         {
-            anim.SetBool("RifleIdle", true);
+            //anim.SetBool("RifleIdle", true);
         }
         else
         {
-            anim.SetBool("RifleIdle", false);
+            //anim.SetBool("RifleIdle", false);
         }
 
         // 뒤로 이동할 때의 이동 속도를 줄입니다.
@@ -354,6 +355,9 @@ public class PlayerController : MonoBehaviour
             {
                 // AKM이 비활성화되어 있으면 RifleWalk 애니메이션 정지
                 anim.SetBool("Idle", true);
+                anim.SetBool("RifleIdle", false);
+                anim.SetBool("RifleWalk", false);
+                anim.SetBool("RifleRun", false);
 
             }
 
@@ -574,7 +578,7 @@ public class PlayerController : MonoBehaviour
 
             Debug.Log("플레이어 상공 10미터");
             anim.SetBool("Landing", true);
-
+            parachuteisgroundui.SetActive(false);
             Debug.Log("Landing애니메이션 출력");
             StartCoroutine(FallAndDestroy());
             Debug.Log("낙하산 제거 코루틴 실행");
