@@ -1440,6 +1440,7 @@ GameObject:
   - component: {fileID: 1479206979509758780}
   - component: {fileID: 5194107031649516943}
   - component: {fileID: 5723682902530188636}
+  - component: {fileID: 8250166666118314071}
   m_Layer: 0
   m_Name: Zombie2
   m_TagString: Untagged
@@ -1478,7 +1479,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   giveDamage: 5
-  hpSlider: {fileID: 0}
+  hpSlider: {fileID: 6954792889174559198}
   zombieAgent: {fileID: 1479206979509758780}
   LookPoint: {fileID: 0}
   attackinRaycastArea: {fileID: 8342155188742349570}
@@ -1567,6 +1568,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8250166666118314071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4537237900762230340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d469993e377d4943afc4c71f3bccbff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footstepsSound:
+  - {fileID: 8300000, guid: 844657702afcde147bcec1d1bd95e0f7, type: 3}
 --- !u!1 &4649474419832253945
 GameObject:
   m_ObjectHideFlags: 0
@@ -2666,6 +2681,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f22a18d33470a534cac4f7cad3b24bc8, type: 3}
+--- !u!114 &6954792889174559198 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3681111649566356272, guid: f22a18d33470a534cac4f7cad3b24bc8, type: 3}
+  m_PrefabInstance: {fileID: 6021748943356820206}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3dd4db7d53fe1040a29c633bbd437c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &8394810517706476205 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2815268128182136899, guid: f22a18d33470a534cac4f7cad3b24bc8, type: 3}

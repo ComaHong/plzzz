@@ -27,7 +27,15 @@ public class ZombieSpawn : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player" )
+        {
+            InvokeRepeating("EnemySpawner", 1f, repeatCycle);
+            audioSource.PlayOneShot(DangerZoneSound);
+            StartCoroutine(dangerZoneTimer());
+            Destroy(gameObject, 10f);
+            gameObject.GetComponent<BoxCollider>().enabled = false;
+        }
+        else if (other.gameObject.tag == "Vehicle")
         {
             InvokeRepeating("EnemySpawner", 1f, repeatCycle);
             audioSource.PlayOneShot(DangerZoneSound);

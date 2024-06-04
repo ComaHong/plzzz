@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public class Zombie1 : MonoBehaviour
 {
@@ -43,8 +44,11 @@ public class Zombie1 : MonoBehaviour
         presentHealth = zombieHealth;
         // 시작하면 네비메쉬컴포넌트를 가져옴
         zombieAgent = GetComponent<NavMeshAgent>();
+        //hpSlider = GetComponentInChildren<HealthBar>();
         hpSlider.GiveFullHealth(zombieHealth);
-        playerBody = GameObject.FindGameObjectWithTag("Player").transform;
+        //LookPoint = GameObject.FindGameObjectWithTag("LookPoint").transform;
+
+        //playerBody = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     // Update is called once per frame

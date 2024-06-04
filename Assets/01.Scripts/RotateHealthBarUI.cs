@@ -7,6 +7,11 @@ public class RotateHealthBarUI : MonoBehaviour
     // 카메라의 위치값을 받아올 변수
     public Transform MainCamera;
 
+    public void Awake()
+    {
+     
+    }
+
     // LateUpdate 메서드는 모든 업데이트가 끝난 후 호출됩니다.
     private void LateUpdate()
     {

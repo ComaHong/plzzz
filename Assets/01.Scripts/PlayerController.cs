@@ -355,7 +355,7 @@ public class PlayerController : MonoBehaviour
             {
                 // AKM이 비활성화되어 있으면 RifleWalk 애니메이션 정지
                 anim.SetBool("Idle", true);
-                anim.SetBool("RifleIdle", false);
+                //anim.SetBool("RifleIdle", false);
                 anim.SetBool("RifleWalk", false);
                 anim.SetBool("RifleRun", false);
 
