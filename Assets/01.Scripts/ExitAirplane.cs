@@ -14,7 +14,7 @@ public class ExitAirplane : MonoBehaviour
     public GameObject maincam; // 비행기에서 나오면 사용할 캠
     private float mouseX; // 카메라가 입력받을 마우스 X축값
     private float mouseY; // 카메라가 입력받을 마우스 Y축값
-
+    public GameObject minimapiconmesh;
 
 
     public bool isPlayerInside = false; // 플레이어가 비행기 안에 있는지 여부
@@ -27,6 +27,11 @@ public class ExitAirplane : MonoBehaviour
         playerbody.SetActive(false);
         maincam.SetActive(false);
         airplanecam.SetActive(true);
+        if (minimapiconmesh != null)
+        {
+            // 시작할 때 Mesh Renderer를 비활성화합니다.
+            minimapiconmesh.GetComponent<MeshRenderer>().enabled = false;
+        }
 
     }
 
@@ -57,6 +62,8 @@ public class ExitAirplane : MonoBehaviour
             Debug.Log("test");
             playerbody.SetActive(true);
             OutAirplane();
+            MeshRenderer meshRenderer = minimapiconmesh.GetComponent<MeshRenderer>();
+            meshRenderer.enabled = !meshRenderer.enabled;
 
         }
         // 마우스 입력 값을 가져옵니다.

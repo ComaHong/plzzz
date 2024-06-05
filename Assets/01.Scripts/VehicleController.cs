@@ -48,11 +48,12 @@ public class VehicleController : MonoBehaviour
     public GameObject goreEffect;
    public GameObject DestroyEffect; // 차량으로 파괴하면 재생할 이펙트 
 
-    //public ParticleSystem muzzleSpark;
+    private Transform quadTransform;
 
     void Start()
     {
-
+        // Quad 오브젝트를 찾아서 저장합니다.
+        quadTransform = playerController.transform.Find("MinimapIcon");
     }
 
     // Update is called once per frame
@@ -78,6 +79,14 @@ public class VehicleController : MonoBehaviour
                     cartext.SetActive(false);
                     // ObjectivesComplete 스크립트의  GetobjectivesDone메서드의 매개변수값 변경
                     ObjectivesComplete.occurrence.GetobjectivesDone(true, true, true, false);
+                    // 플레이어 오브젝트를 차량의 자식으로 설정
+                    playerController.transform.SetParent(transform);
+                    playerController.enabled = false;  // 추가된 부분
+                    if (quadTransform != null)
+                    {
+                        quadTransform.SetParent(transform);
+                        quadTransform.gameObject.SetActive(true); // Quad를 활성화 상태로 유지
+                    }
 
                 }
                 // 차량에 탑승한 상태에서 F키를 누르면 차량에서 내림
@@ -92,7 +101,19 @@ public class VehicleController : MonoBehaviour
                     // radius값 5로변경
                     radius = 5f;
                     Debug.Log("플레이어 차량에서 내림");
+                    // 플레이어를 차량의 자식에서 해제
+                    playerController.transform.SetParent(null);
+                    playerController.enabled = true;  // 추가된 부분
+                    if (quadTransform != null)
+                    {
+                        quadTransform.SetParent(playerController.transform);
+                    }
+
                 }
+            }
+            else
+            {
+                cartext.SetActive(false);
             }
         }
         // 차량문이 열려있으면
@@ -121,7 +142,7 @@ public class VehicleController : MonoBehaviour
         else if (isOpened == false)
         {
              
-            Debug.Log("Isopen false");
+            
             // 3인칭카메라 키기
             ThirdPersonCam.SetActive(true);
             // 3인칭캔버스 키기

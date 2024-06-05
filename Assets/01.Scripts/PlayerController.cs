@@ -21,8 +21,8 @@ public class PlayerController : MonoBehaviour
     public GameObject playerDamage; // 플레이어가 피격당함을 표시해줄 UI
     public HealthBar hpSlider; //hp슬라이더 가지고있는 스크립트
 
-    public GameObject minimapiconmesh; // 미니맵 아이콘 메쉬렌더러 컴포넌트
-        public GameObject EndgameMenu; // 엔드게임 메뉴패널
+    //public GameObject minimapiconmesh; // 미니맵 아이콘 메쉬렌더러 컴포넌트
+    public GameObject EndgameMenu; // 엔드게임 메뉴패널
     public InventoryObject inventory; // 
     public GameObject ItemUI; // 아이템상호작용 UI 텍스트
     public GameObject PlayerInventoryUi; // 플레이어의 인벤토리 UI패널
@@ -46,9 +46,10 @@ public class PlayerController : MonoBehaviour
     public GameObject parachuteisgroundui; // 낙하산에서 땅으로 뛰어내림을 표시할 UI
     public GameObject parachute; // 낙하산 오브젝트
     public Animator paraanim; // 낙하산오브젝트의 애니메이터
+    public GameObject minimapIcon;
     private bool qKeyPressed = false; // 낙하와 낙하산을 핌을 관리할 bool변수
     private bool parachuteDeployed = false; // 낙하산이 펴졌는지를 체크할 bool변수
-       private bool isFlying = false; // 플레이어가 날고있음을 체크할 bool변수
+    private bool isFlying = false; // 플레이어가 날고있음을 체크할 bool변수
     private bool parachuteReady = false; // 낙하산이 준비되었는지 판별한 bool변수
     private bool lastQkey = false; // 마지막 Q눌림을 체크할 bool 변수
     private enum JumpState { Initial, Flying, ParachuteReady, ParachuteDeployed, Landing }
@@ -69,31 +70,25 @@ public class PlayerController : MonoBehaviour
     public bool isAKMActive;
     private bool paraUIACtive = false;
     private bool paraUIunactive = false;
-    
+
     private void Awake()
     {
-        cam.SetActive(false);
-        if(minimapiconmesh != null)
-        {
-            // 시작할 때 Mesh Renderer를 비활성화합니다.
-            minimapiconmesh.GetComponent<MeshRenderer>().enabled = false;
-        }
+         cam.SetActive(false);
+       
     }
     // 시작하면 사용될 메서드
     void Start()
     {
 
+        
         // 테스팅 끝나면 주석 해체해야함***playerbody.SetActive(false);    
-       
+
         rb = GetComponent<Rigidbody>(); // 시작하면 플레이어의 리지드바디 컴포넌트를 찾아서 할당
         Cursor.lockState = CursorLockMode.Locked; // 마우스 커서 락걸기
         presentHealth = playerHealth; // 플레이어의 현재체력을 초기에 설정된값으로 할당
         hpSlider.GiveFullHealth(playerHealth); // 플레이어의 Silder Ui의 MaxValue와 Value에 플레이어의 체력을 할당
         anim.SetBool("Walk", false);
         anim.SetBool("Run", false);
-
-       
-
 
 
     }
@@ -132,10 +127,14 @@ public class PlayerController : MonoBehaviour
         // 인벤토리 저장 및 불러오는 메서드
         InventorySaveandLoad();
         // 낙하산 관련 메서드
-        if (player.position.y <= 250.0f && !parachuteReady && !parachuteDeployed) 
+        if (player.position.y <= 250.0f && !parachuteReady && !parachuteDeployed)
         {
             parachuteui.SetActive(true);
             parachuteReady = true;
+        }
+        else if (parachuteReady == false)
+        {
+            parachuteui.SetActive(false);
         }
         else if (player.position.y <= 60f && !lastQkey)
         {
@@ -182,8 +181,8 @@ public class PlayerController : MonoBehaviour
             rb.useGravity = true;
 
 
-            //anim.SetBool("Jumping", true);
-            anim.SetBool("isGround", true);
+
+            //anim.SetBool("isGround", true);
         }
 
     }
@@ -194,8 +193,8 @@ public class PlayerController : MonoBehaviour
         {
             isGround = true;
             rb.useGravity = true;
-            //anim.SetBool("Jumping", true);
-            anim.SetBool("isGround", true);
+
+            //anim.SetBool("isGround", true);
         }
 
     }
@@ -205,7 +204,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGround = false;
-            anim.SetBool("isGround", false);
+            //anim.SetBool("isGround", false);
 
         }
 
@@ -231,10 +230,10 @@ public class PlayerController : MonoBehaviour
             // AKM이 활성화되어 있을 때
             if (akmObject.activeSelf)
             {
-                Debug.Log("ak활성화");
+
                 // RifleWalk 애니메이션을 활성화합니다.
                 anim.SetBool("RifleWalk", true);
-                Debug.Log("총들고 움직임");
+
             }
             else
             {
@@ -287,7 +286,7 @@ public class PlayerController : MonoBehaviour
         anim.SetFloat("MoveV", smoothedValueY);
         anim.SetFloat("MoveH", smoothedValueX);
 
-              
+
     }
 
     // 플레이어의 이동 및 회전을 처리할 메서드
@@ -319,7 +318,7 @@ public class PlayerController : MonoBehaviour
                 anim.SetBool("Run", true);
                 //anim.SetBool("Attack", true);
                 //anim.SetBool("Fire", false);
-                Debug.Log("뛰기");
+
                 // 달리는 동안 이동 벡터를 계산하여 Rigidbody를 이용해 이동합니다.
                 Vector3 run = ((transform.forward * v) + (transform.right * h)) * runSpeed * Time.deltaTime;
                 rb.MovePosition(rb.position + run);
@@ -374,9 +373,8 @@ public class PlayerController : MonoBehaviour
 
         if (spbar && isGround)
         {
-            Debug.Log("JUMP");
-            // 점프 애니메이션을 재생합니다.
-            anim.SetBool("Jumping", true);
+
+
             // 땅에 닿음을 false로 변경합니다.
             isGround = false;
             // 플레이어를 위쪽으로 이동시켜 점프 효과를 줍니다.
@@ -472,16 +470,16 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             inventory.Save();
-            Debug.Log("인벤토리 저장");
+
         }
         if (Input.GetKeyDown(KeyCode.KeypadEnter))
         {
             inventory.Load();
-            Debug.Log("인벤토리 저장값 불러오기 성공");
+
         }
     }
 
-   
+
     void IsCrouch()
     {
         // C키를 눌렀고 플레이어가 앉아있지 않다면 실행할 코드
@@ -533,8 +531,8 @@ public class PlayerController : MonoBehaviour
         playerbody.SetActive(true);
         anim.SetBool("Flying", true);
         anim.SetBool("Flying2", true);
-        MeshRenderer meshRenderer = minimapiconmesh.GetComponent<MeshRenderer>();
-        meshRenderer.enabled = !meshRenderer.enabled;
+        //MeshRenderer meshRenderer = minimapiconmesh.GetComponent<MeshRenderer>();
+        //meshRenderer.enabled = !meshRenderer.enabled;
         Debug.Log("Flying");
         isFlying = true;
         currentState = JumpState.Flying;

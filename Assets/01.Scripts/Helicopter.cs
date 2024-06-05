@@ -20,6 +20,7 @@ public class Helicopter : MonoBehaviour
     public GameObject ThirdPersonCanvas;
     public GameObject vihicleCam;
     public GameObject playerCharacter;
+   
     public Transform helicopterDoor;
     
 
@@ -43,12 +44,28 @@ public class Helicopter : MonoBehaviour
     void Start()
     {
         transform.position = initialPosition; // 초기 위치로 설정
-        helicopter.SetActive(false); // 헬리콥터 비활성화 상태로 시작
+        //helicopter.SetActive(false); // 헬리콥터 비활성화 상태로 시작
+        ActivateHelicopter();
+        isHelicoptercam.SetActive(true);
+
 
     }
 
     private void Update()
     {
+        if (isMovingForward)
+        {
+            Debug.Log("헬기 X축 이동시작");
+            // 헬리콥터를 Z축 방향으로 이동
+            transform.position = Vector3.MoveTowards(transform.position, forwardTargetPosition, forwardSpeed * Time.deltaTime);
+
+            // Z축 목표 위치에 도달하면 Z 방향 이동 종료하고 Y 방향 이동 시작
+            if (transform.position == forwardTargetPosition)
+            {
+                isMovingForward = false;
+                isDescending = true;
+            }
+        }
         // 플레이어의 위치값과 차량의 위치값 사이값이 radius 값보다 작을경우 실행되는 로직
         if (Vector3.Distance(transform.position, playerController.transform.position) < radius)
         {
@@ -129,23 +146,16 @@ public class Helicopter : MonoBehaviour
     public void ActivateHelicopter()
     {
         helicopter.SetActive(true); // 헬리콥터 활성화
+        Debug.Log("헬리콥터 활성화");
         isMovingForward = true; // 헬리콥터 Z축 이동 시작
+        Debug.Log("헬기 Z축 이동 시작");
+        isDescending = true;
         StartHelicopter();
+        Debug.Log("헬기 출발");
     }
     public void StartHelicopter()
     {
-        if (isMovingForward)
-        {
-            // 헬리콥터를 Z축 방향으로 이동
-            transform.position = Vector3.MoveTowards(transform.position, forwardTargetPosition, forwardSpeed * Time.deltaTime);
-
-            // Z축 목표 위치에 도달하면 Z 방향 이동 종료하고 Y 방향 이동 시작
-            if (transform.position == forwardTargetPosition)
-            {
-                isMovingForward = false;
-                isDescending = true;
-            }
-        }
+       
 
         if (isDescending)
         {

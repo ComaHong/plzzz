@@ -2688,7 +2688,6 @@ GameObject:
   - component: {fileID: 7125787312566385196}
   - component: {fileID: 9122256188458154608}
   - component: {fileID: 1679893664552467097}
-  - component: {fileID: 4289450266697871814}
   m_Layer: 0
   m_Name: Zombie3
   m_TagString: Untagged
@@ -2817,20 +2816,6 @@ MonoBehaviour:
   playerInvisionRadius: 0
   playerInattackingRadius: 0
 --- !u!114 &1679893664552467097
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7104217434009269793}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d469993e377d4943afc4c71f3bccbff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  footstepsSound:
-  - {fileID: 8300000, guid: 844657702afcde147bcec1d1bd95e0f7, type: 3}
---- !u!114 &4289450266697871814
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -174,7 +174,7 @@ public class Rifle : MonoBehaviour
         // 총알이 맞은 대상에 따라 효과 및 데미지 적용
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hitinfo, shootingRange))
         {
-            Debug.Log(hitinfo.transform.name);
+          
 
             ObjectToHit objectToHit = hitinfo.transform.GetComponent<ObjectToHit>();
             Zombie1 zombie1 = hitinfo.transform.GetComponent<Zombie1>();
@@ -214,7 +214,7 @@ public class Rifle : MonoBehaviour
         playerController.runSpeed = 0f;
         // 재장전상태 true
         setReloading = true;
-        Debug.Log("장전중...");
+       
         // 총구화염파티클 멈춤
         muzzleSpark.Stop();
         // Reload애니메이션 실행

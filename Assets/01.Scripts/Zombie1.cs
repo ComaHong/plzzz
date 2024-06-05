@@ -48,7 +48,8 @@ public class Zombie1 : MonoBehaviour
         hpSlider.GiveFullHealth(zombieHealth);
         //LookPoint = GameObject.FindGameObjectWithTag("LookPoint").transform;
 
-        //playerBody = GameObject.FindGameObjectWithTag("Player").transform;
+      // playerBody = GameObject.FindGameObjectWithTag("Player").transform;
+       
     }
 
     // Update is called once per frame
