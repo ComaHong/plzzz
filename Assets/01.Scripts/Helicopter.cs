@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,14 +14,18 @@ public class Helicopter : MonoBehaviour
     public GameObject helicoptercam;
     public GameObject helicoptertext;
     [Header("사용하지 않을것들")]
-    public GameObject isHelicoptercam;
+    //public GameObject isHelicoptercam;
     public GameObject AimCam;
     public GameObject Aimcanvas;
     public GameObject ThirdPersonCam;
     public GameObject ThirdPersonCanvas;
     public GameObject vihicleCam;
     public GameObject playerCharacter;
-   
+    public CinemachineDollyCart dollyCart;
+    public CinemachineSmoothPath dollyTrack;
+    public CinemachineVirtualCamera dollyVirtualCamera;
+    public UIManager uiManager; 
+
     public Transform helicopterDoor;
     
 
@@ -32,7 +37,7 @@ public class Helicopter : MonoBehaviour
     private Vector3 initialPosition = new Vector3(386.799988f, 161.699997f, -114f); // 헬리콥터의 초기 위치
     private Vector3 forwardTargetPosition = new Vector3(336.529999f, 161.699997f, 621f); // Z축 목표 위치
     private Vector3 finalTargetPosition = new Vector3(336.529999f, 17.7000008f, 621f); // 최종 목표 위치
-    private Vector3 leaveingPosition = new Vector3(386.799988f, 161.699997f, 2000.599976f); // 비행기가 최종적으로 날아갈 위치
+    private Vector3 leaveingPosition = new Vector3(386.799988f, 300f, 2000.599976f); // 비행기가 최종적으로 날아갈 위치
 
     private bool isMovingForward = false; // Z축 방향 이동 중인지 여부
     private bool isDescending = false; // Y축 방향 하강 중인지 여부
@@ -44,9 +49,11 @@ public class Helicopter : MonoBehaviour
     void Start()
     {
         transform.position = initialPosition; // 초기 위치로 설정
-        //helicopter.SetActive(false); // 헬리콥터 비활성화 상태로 시작
+        helicopter.SetActive(false); // 헬리콥터 비활성화 상태로 시작
         ActivateHelicopter();
-        isHelicoptercam.SetActive(true);
+        dollyCart.gameObject.SetActive(false);
+        dollyVirtualCamera.gameObject.SetActive(false);
+
 
 
     }
@@ -117,27 +124,14 @@ public class Helicopter : MonoBehaviour
             // 플레이어 오브젝트 끄기
             playerCharacter.SetActive(false);
             // 차량캠 켜짐
-            isHelicoptercam.SetActive(true);
+            //isHelicoptercam.SetActive(true);
 
             MoveHelicopter();
 
 
 
         }
-        // 문이 닫혀있을경우
-        //else if (isOpened == false)
-        {
-            // 3인칭카메라 키기
-            //ThirdPersonCam.SetActive(true);
-            // 3인칭캔버스 키기
-            //ThirdPersonCanvas.SetActive(true);
-            // 에임캠 사용
-            //AimCam.SetActive(true);
-            // 에임캔버스 사용
-            //Aimcanvas.SetActive(true);
-            // 플레이어 오브젝트 키기
-            //playerCharacter.SetActive(true);
-        }
+       
     }
 
 
@@ -177,7 +171,7 @@ public class Helicopter : MonoBehaviour
                 state.speed = Mathf.Lerp(state.speed, 0, animationStopSpeed * Time.deltaTime);
                 if (state.speed == 0)
                 {
-                    helicoptercam.SetActive(true);
+                    //helicoptercam.SetActive(true);
                 }
             }
 
@@ -189,6 +183,22 @@ public class Helicopter : MonoBehaviour
 
     private void MoveHelicopter()
 {
-        helicopter.transform.position = Vector3.MoveTowards(transform.position, leaveingPosition, forwardSpeed * Time.deltaTime);
+        helicopter.transform.position = Vector3.MoveTowards(transform.position, leaveingPosition, descendSpeed * Time.deltaTime);
+        // 시네머신 돌리 카트 설정
+        dollyCart.m_Path = dollyTrack;
+        dollyCart.m_Position = 0; // 돌리 트랙의 시작 위치로 설정
+        dollyCart.m_Speed = descendSpeed; // 돌리 카트의 속도를 헬리콥터의 속도로 설정
+        dollyCart.gameObject.SetActive(true);
+
+        // 시네머신 버추얼 카메라 설정
+        //dollyVirtualCamera.Follow = helicopter.transform;
+        dollyVirtualCamera.LookAt = helicopter.transform;
+        dollyVirtualCamera.gameObject.SetActive(true);
+       StartCoroutine(showEndgame());
+    }
+    IEnumerator showEndgame()
+    {
+        yield return new WaitForSeconds(3f);
+        uiManager.EndGameMenuUI.SetActive(true);
     }
 }

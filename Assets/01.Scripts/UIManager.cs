@@ -34,7 +34,7 @@ public class UIManager : MonoBehaviour
                 Cursor.lockState = CursorLockMode.None;
             }
         }
-        else if (Input.GetKeyDown(KeyCode.O))
+        else if (Input.GetKeyDown(KeyCode.Q))
         {
             if (GameIsStopped)
             {

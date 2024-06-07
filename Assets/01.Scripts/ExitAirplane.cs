@@ -32,6 +32,11 @@ public class ExitAirplane : MonoBehaviour
             // 시작할 때 Mesh Renderer를 비활성화합니다.
             minimapiconmesh.GetComponent<MeshRenderer>().enabled = false;
         }
+        PlayerController playerController = player.GetComponent<PlayerController>();
+        if (playerController != null)
+        {
+            playerController.enabled = false;
+        }
 
     }
 
@@ -48,7 +53,7 @@ public class ExitAirplane : MonoBehaviour
     {
         maincam.SetActive(false);
         airplanecam.SetActive(true);
-        player.transform.SetParent(airplane.transform);
+       
 
     }
 
@@ -57,13 +62,20 @@ public class ExitAirplane : MonoBehaviour
     {
 
         // 플레이어가 비행기 안에 있으면 Q 키를 눌러서 비행기에서 나갈 수 있음
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.F))
         {
             Debug.Log("test");
             playerbody.SetActive(true);
-            OutAirplane();
+            //OutAirplane();
             MeshRenderer meshRenderer = minimapiconmesh.GetComponent<MeshRenderer>();
             meshRenderer.enabled = !meshRenderer.enabled;
+            maincam.SetActive(true); // 주 카메라 활성화
+            airplanecam.SetActive(false); // 비행기 카메라 비활성화.
+            PlayerController playerController = player.GetComponent<PlayerController>();
+            if (playerController != null)
+            {
+                playerController.enabled = true;
+            }
 
         }
         // 마우스 입력 값을 가져옵니다.
@@ -72,23 +84,5 @@ public class ExitAirplane : MonoBehaviour
 
     }
 
-    private void OutAirplane()
-    {
-        // 플레이어를 비행기 밖으로 이동시키고 중력에 따라 떨어뜨림
-
-        Rigidbody playerRigidbody = player.GetComponent<Rigidbody>();
-        maincam.SetActive(true); // 주 카메라 활성화
-        Debug.Log("카메라 활성화");
-        airplanecam.SetActive(false); // 비행기 카메라 비활성화
-        player.transform.SetParent(null); // 부모 해제
-        playerRigidbody.isKinematic = false; // 중력 적용
-        playerRigidbody.AddForce(Vector3.down * exitForce, ForceMode.Impulse); // 떨어뜨리기
-                                                                               // PlayerController 스크립트 활성화
-        PlayerController playerController = player.GetComponent<PlayerController>();
-        if (playerController != null)
-        {
-            playerController.enabled = true;
-        }
-
-    }
+    
 }

@@ -219,6 +219,7 @@ public class Rifle : MonoBehaviour
         muzzleSpark.Stop();
         // Reload애니메이션 실행
         anim.SetTrigger("Reload");
+        anim.SetBool("Run", false);
         // 장전 소리 한번 실행
         audioSource.PlayOneShot(reloadingSound);
         // 재장전 시간을 기다림

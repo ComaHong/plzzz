@@ -31,6 +31,7 @@ public class VehicleController : MonoBehaviour
     public GameObject cartext; // 상호작용 텍스트
     private float radius = 5f;
     private bool isOpened = false;
+    
 
 
     [Header("사용하지 않을것들")]
@@ -54,6 +55,7 @@ public class VehicleController : MonoBehaviour
     {
         // Quad 오브젝트를 찾아서 저장합니다.
         quadTransform = playerController.transform.Find("MinimapIcon");
+        
     }
 
     // Update is called once per frame
@@ -62,6 +64,7 @@ public class VehicleController : MonoBehaviour
         // 플레이어의 위치값과 차량의 위치값 사이값이 radius 값보다 작을경우 실행되는 로직
         if (Vector3.Distance(transform.position, playerController.transform.position) < radius)
         {
+           
             // 차량상호작용텍스트켜짐
             cartext.SetActive(true);
             // 차량에 탑승하지 않은 상태에서 F키를 누르면 차량에 탑승
@@ -70,9 +73,7 @@ public class VehicleController : MonoBehaviour
                 // 차량의 문이 닫혓을떄 실행되는 로직
                 if (!isOpened)
                 {
-                    // 열림 true
-                    isOpened = true;
-                    // radius 값 을 언제든지 내릴수 있도록 5000으로변경
+                                      // radius 값 을 언제든지 내릴수 있도록 5000으로변경
                     radius = 5000f;
                     Debug.Log("차량 탑승");
                     // 차량 상호작용텍스트 끔
@@ -87,6 +88,8 @@ public class VehicleController : MonoBehaviour
                         quadTransform.SetParent(transform);
                         quadTransform.gameObject.SetActive(true); // Quad를 활성화 상태로 유지
                     }
+                    // 열림 true
+                    isOpened = true;
 
                 }
                 // 차량에 탑승한 상태에서 F키를 누르면 차량에서 내림
@@ -96,10 +99,10 @@ public class VehicleController : MonoBehaviour
                 {
                     // 플레이어의 위치값을 차량 운전석 위치로 변경
                     playerController.transform.position = vehicleDoor.transform.position;
-                    // 문닫힘
-                    isOpened = false;
+                    
                     // radius값 5로변경
                     radius = 5f;
+                    cartext.SetActive(false);
                     Debug.Log("플레이어 차량에서 내림");
                     // 플레이어를 차량의 자식에서 해제
                     playerController.transform.SetParent(null);
@@ -108,14 +111,14 @@ public class VehicleController : MonoBehaviour
                     {
                         quadTransform.SetParent(playerController.transform);
                     }
+                    // 문닫힘
+                    isOpened = false;
 
                 }
             }
-            else
-            {
-                cartext.SetActive(false);
-            }
+           
         }
+        else { cartext.SetActive(false); }
         // 차량문이 열려있으면
         if (isOpened == true)
         {
@@ -132,6 +135,7 @@ public class VehicleController : MonoBehaviour
             // 차량캠 켜짐
             iscarcam.SetActive(true);
             isOpened = true;
+            cartext.SetActive(false);
 
             MoveVehicle();
             VehicleSteering();
@@ -154,6 +158,9 @@ public class VehicleController : MonoBehaviour
             isOpened = false;
             // 플레이어 오브젝트 키기
             PlayerCharacter.SetActive(true);
+
+           
+           
             
         }
 
