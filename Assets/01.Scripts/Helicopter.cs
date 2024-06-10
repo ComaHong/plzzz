@@ -37,12 +37,13 @@ public class Helicopter : MonoBehaviour
     private Vector3 initialPosition = new Vector3(386.799988f, 161.699997f, -114f); // 헬리콥터의 초기 위치
     private Vector3 forwardTargetPosition = new Vector3(336.529999f, 161.699997f, 621f); // Z축 목표 위치
     private Vector3 finalTargetPosition = new Vector3(336.529999f, 17.7000008f, 621f); // 최종 목표 위치
-    private Vector3 leaveingPosition = new Vector3(386.799988f, 300f, 2000.599976f); // 비행기가 최종적으로 날아갈 위치
+    private Vector3 leaveingPosition = new Vector3(386.799988f, 158f, 621); // 비행기가 최종적으로 날아갈 위치
 
     private bool isMovingForward = false; // Z축 방향 이동 중인지 여부
     private bool isDescending = false; // Y축 방향 하강 중인지 여부
     private bool isSlowingDown = false; // 애니메이터 속도를 줄이는 중인지 여부
     private bool isOpened = false;
+    private bool isLeaveing = false; // 비행기가 떠나고 있는지 여부
     public  float radius = 100f; // 플레이어 반경 값
 
 
@@ -183,6 +184,19 @@ public class Helicopter : MonoBehaviour
 
     private void MoveHelicopter()
 {
+        isLeaveing = true;
+        if(isLeaveing)
+        {
+            // 애니메이션의 속도를 점진적으로 증가시킴
+            foreach (AnimationState state in helicopterAnimation)
+            {
+                state.speed = Mathf.Lerp(state.speed, 1, animationStopSpeed * Time.deltaTime);
+                if (state.speed >= 1)
+                {
+                    //helicoptercam.SetActive(true);
+                }
+            }
+        }
         helicopter.transform.position = Vector3.MoveTowards(transform.position, leaveingPosition, descendSpeed * Time.deltaTime);
         // 시네머신 돌리 카트 설정
         dollyCart.m_Path = dollyTrack;
@@ -198,7 +212,7 @@ public class Helicopter : MonoBehaviour
     }
     IEnumerator showEndgame()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
         uiManager.EndGameMenuUI.SetActive(true);
     }
 }

@@ -8,47 +8,7 @@ public class SelectCharacter : MonoBehaviour
 {
     public GameObject selectCharacter;
     public GameObject mainMenu;
-    //public GameObject player1prefab;
-    //public GameObject player2prefab;
-    //public GameObject player3prefab;
-    //test12 testMod;
-    //void Start()
-    //{
-    //    // SceneManager.sceneLoaded 이벤트에 OnSceneLoaded 함수를 추가하여 씬이 로드될 때 호출되도록 함
-    //    SceneManager.sceneLoaded += OnSceneLoaded;
-    //    testMod = FindObjectOfType<test12>();
-    //}
-
-    //void OnDestroy()
-    //{
-    //    // 이 스크립트가 파괴될 때 이벤트 리스너를 제거
-    //    SceneManager.sceneLoaded -= OnSceneLoaded;
-    //}
-    // 씬이 로드될 때 호출되는 함수
-    //void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    //{
-    //    // 씬 이름이 ZombieScene인 경우에만 실행
-    //    if (scene.name == "ZombieLand")
-    //    {
-    //        if (testMod.a == 0)
-    //        {
-    //            GameObject player1 = GameObject.Find("Player1");
-    //            if (player1 != null)
-    //            {
-    //                player1.SetActive(true);
-    //            }
-               
-    //        }
-    //        else if (testMod.a == 1)
-    //        {
-    //            GameObject player2 = GameObject.Find("Player2");
-    //            if (player2 != null)
-    //            {
-    //                player2.SetActive(true);
-    //            }
-    //        }
-    //    }
-    //}
+  
     public void OnBackButton()
     {
         selectCharacter.SetActive(false);

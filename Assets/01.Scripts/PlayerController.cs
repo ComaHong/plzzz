@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGround = true;
-            rb.useGravity = true;
+           
            
 
 
@@ -131,7 +131,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGround = true;
-            rb.useGravity = true;
+            
 
             //anim.SetBool("isGround", true);
         }
