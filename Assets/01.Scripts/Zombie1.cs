@@ -15,8 +15,7 @@ public class Zombie1 : MonoBehaviour
 
     [Header("좀비 필요한것들")]
     public NavMeshAgent zombieAgent; // 네비매쉬 에이전트 컴포넌트
-    public Transform LookPoint; // 좀비가 바라볼 위치
-    public Camera attackinRaycastArea; // 좀비시점 레이캐스트용 카메라 컴포넌트
+   
     public Transform playerBody; // 플레이어의 위치
     public LayerMask PlayerLayer; // 플레이어 레이어
 
@@ -113,19 +112,21 @@ public class Zombie1 : MonoBehaviour
     private void AttackPlayer()
     {
         zombieAgent.SetDestination(transform.position);
-        transform.LookAt(LookPoint);
+        transform.LookAt(playerBody); // LookPoint 대신 playerBody로 변경
         if (!previouslyAttack)
         {
-            RaycastHit hitinfo;
-            if (Physics.Raycast(attackinRaycastArea.transform.position, attackinRaycastArea.transform.forward, out hitinfo, attackingRadius))
+            // 플레이어와 좀비 사이의 거리를 계산하여 공격을 수행
+            float distanceToPlayer = Vector3.Distance(transform.position, playerBody.position);
+
+            if (distanceToPlayer <= attackingRadius)
             {
-                Debug.Log("공격중" + hitinfo.transform.name);
+                Debug.Log("공격중 " + playerBody.name);
 
-                PlayerController playerBody = hitinfo.transform.GetComponent<PlayerController>();
+                PlayerController player = playerBody.GetComponent<PlayerController>();
 
-                if (playerBody != null)
+                if (player != null)
                 {
-                    playerBody.playerHitDamage(giveDamage);
+                    player.playerHitDamage(giveDamage);
                 }
 
                 zombieanim.SetBool("Attacking", true);

@@ -38,12 +38,10 @@ public class PlayerController : MonoBehaviour
 
     public GameObject playerbody; //플레이어 바디
 
-    [Header("낙하산 부품들")]
-   
-    public GameObject minimapIcon;
-   
-    private enum JumpState { Initial, Flying, ParachuteReady, ParachuteDeployed, Landing }
-    private JumpState currentState = JumpState.Initial;
+
+    public GameObject minimapIcon; // 미니맵에 표시할 쿼드오브젝트 
+
+
 
     /// <summary>
     /// private필드
@@ -55,39 +53,30 @@ public class PlayerController : MonoBehaviour
     private bool spbar; // 플레이어가 점프 했는지 확인할 bool타입 변수
 
     private Rigidbody rb; // 플레이어의 리지드바디 컴포넌트
-    public bool Crouch = false; //v 플레이어가 앉아있는지 확인할 bool타입 변수
+    private bool Crouch = false; //v 플레이어가 앉아있는지 확인할 bool타입 변수
     private bool isGround = false; // 땅을 밟고 있는지 확인할 bool 변수
-    public bool isAKMActive;
-   
+    public  bool isAKMActive;
+
 
     private void Awake()
     {
-         cam.SetActive(false);
-       
+        cam.SetActive(false);
+
     }
     // 시작하면 사용될 메서드
     void Start()
     {
 
-        
-        // 테스팅 끝나면 주석 해체해야함***playerbody.SetActive(false);    
-
         rb = GetComponent<Rigidbody>(); // 시작하면 플레이어의 리지드바디 컴포넌트를 찾아서 할당
         Cursor.lockState = CursorLockMode.Locked; // 마우스 커서 락걸기
         presentHealth = playerHealth; // 플레이어의 현재체력을 초기에 설정된값으로 할당
         hpSlider.GiveFullHealth(playerHealth); // 플레이어의 Silder Ui의 MaxValue와 Value에 플레이어의 체력을 할당
-        anim.SetBool("Walk", false);
-        anim.SetBool("Run", false);
-
 
     }
 
     // 계속 업데이트 체킹할 메서드
     void Update()
     {
-
-       
-
 
 
         // 플레이어의 인풋담당 메서드
@@ -100,11 +89,10 @@ public class PlayerController : MonoBehaviour
         Jump();
         // 인벤토리 UI껏다켰다 메서드
         ToggleInventory();
-        // 발아래를 체크할 메서드
-        //SurfaceCheck();
+
         // 인벤토리 저장 및 불러오는 메서드
         InventorySaveandLoad();
-       
+
         // 앉기 메서드
         IsCrouch();
 
@@ -116,12 +104,8 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGround = true;
-           
-           
 
 
-
-            //anim.SetBool("isGround", true);
         }
 
     }
@@ -131,9 +115,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGround = true;
-            
 
-            //anim.SetBool("isGround", true);
         }
 
     }
@@ -143,9 +125,8 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGround = false;
-            //anim.SetBool("isGround", false);
-
-        }
+           
+                    }
 
     }
     // 플레이어의 이동을 담당하는 메서드
@@ -243,21 +224,22 @@ public class PlayerController : MonoBehaviour
     // 플레이어의 달리기 동작을 처리할 메서드
     private void Run()
     {
+        // akm 오브젝트의 상태를 반전시킴
         isAKMActive = akmObject.activeSelf;
+        // 키보드 좌측에 있는 Shift키를 누를경우 실행됨
         if (Input.GetKey(KeyCode.LeftShift))
         {
             h = Input.GetAxisRaw("Horizontal");
             v = Input.GetAxisRaw("Vertical");
+            // 방향 벡터 생성
             Vector3 direction = new Vector3(h, 0f, v).normalized;
-
+            // 방향의 입력값에 따라 애니메이션 변경
             if (direction.magnitude > 0.1f)
             {
                 // 달리기 중일 때의 애니메이션을 설정합니다.
                 anim.SetBool("Walk", false);
                 anim.SetBool("Run", true);
-                //anim.SetBool("Attack", true);
-                //anim.SetBool("Fire", false);
-
+             
                 // 달리는 동안 이동 벡터를 계산하여 Rigidbody를 이용해 이동합니다.
                 Vector3 run = ((transform.forward * v) + (transform.right * h)) * runSpeed * Time.deltaTime;
                 rb.MovePosition(rb.position + run);
@@ -307,14 +289,15 @@ public class PlayerController : MonoBehaviour
     // 플레이어의 점프 동작을 처리할 메서드
     void Jump()
     {
+        // spbar 변수에 키보드 Space 를 할당
         spbar = Input.GetKeyDown(KeyCode.Space);
         if (spbar) Debug.Log("점프키 누름");
 
+        // 플레이어가 땅에 닿아있고 spbar를 누를경우
         if (spbar && isGround)
         {
 
-
-            // 땅에 닿음을 false로 변경합니다.
+                        // 땅에 닿음을 false로 변경합니다.
             isGround = false;
             // 플레이어를 위쪽으로 이동시켜 점프 효과를 줍니다.
             var force = Vector3.up * 5;
